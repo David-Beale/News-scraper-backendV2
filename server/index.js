@@ -12,14 +12,9 @@ const server = new ApolloServer({
   cors: true,
   debug: true,
   introspection: true,
-  // engine: {
-  //   apiKey: process.env.ENGINE_API_KEY,
-  //   schemaTag: "beta"
-  // }
 });
 
 const PORT = process.env.PORT || 4000;
-// console.log("process.env.ENGINE_API_KEY", process.env.ENGINE_API_KEY);
 
 console.log("port", PORT);
 server.listen({ port: PORT }, () => {

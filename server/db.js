@@ -1,10 +1,9 @@
 const mongoose = require('mongoose');
-mongoose.Promise = global.Promise;
+require('dotenv').config();
 
 const url =
-  // 'mongodb://alandouglas96:Luninance758@ds133328.mlab.com:33328/heroku_w18xw386';
-  'mongodb://localhost/headlines'
-  // 'mongodb+srv://admin:admin@headlines-sa1tk.gcp.mongodb.net/test?retryWrites=true&w=majority'
+  // 'mongodb://localhost/headlines'
+  process.env.DB_URL
 
 mongoose.connect(url, { useNewUrlParser: true, useUnifiedTopology: true });
 mongoose.connection.once('open', () =>
