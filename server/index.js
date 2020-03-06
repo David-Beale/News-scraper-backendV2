@@ -22,7 +22,7 @@ server.listen({ port: PORT }, () => {
 });
 
 
-storeHeadlines();
-setInterval(() => {
-  storeHeadlines();
-}, 3600000);
+storeHeadlines.store();
+// setInterval(() => {
+//   storeHeadlines.store();
+// }, 3600000);
