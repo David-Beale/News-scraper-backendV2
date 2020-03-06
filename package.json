@@ -29,6 +29,7 @@
     "underscore": "^1.9.2"
   },
   "devDependencies": {
+    "jasmine": "^3.5.0",
     "jest": "^24.9.0"
   }
 }
