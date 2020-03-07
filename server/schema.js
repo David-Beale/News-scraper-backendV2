@@ -2,7 +2,7 @@ const { gql } = require("apollo-server");
 
 const typeDefs = gql`
   type Query {
-    headline (newspaper: String, day: Int, month: Int, year: Int, locale: String ): [Headlines]
+    headline (newspaper: String, day: Int, month: Int, year: Int, locale: String, _id:ID ): [Headlines]
   }
 
   type Headlines {
