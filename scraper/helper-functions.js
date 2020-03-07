@@ -3,6 +3,7 @@ const cheerio = require('cheerio');
 const moment = require('moment');
 const fs = require('fs')
 const Headlines = require("../server/models/headlines")
+const SiteData = require("../server/models/site-data")
 
 module.exports = {
   getHeadline: async function (link, test = false) {
@@ -45,6 +46,10 @@ module.exports = {
         return (`ITEMS INSERTED :  ${saveCounter} DUPLICATE ITEMS :  ${duplicateCounter}`)
       }
     }
+  },
+  getData: async function () {
+    const siteData = await SiteData.find();
+    return siteData
   }
 }
 

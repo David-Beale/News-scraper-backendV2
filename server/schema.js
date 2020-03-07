@@ -3,6 +3,7 @@ const { gql } = require("apollo-server");
 const typeDefs = gql`
   type Query {
     headline (newspaper: String, day: Int, month: Int, year: Int, locale: String, _id:ID ): [Headlines]
+    html (website: String): Html
   }
 
   type Headlines {
@@ -14,6 +15,9 @@ const typeDefs = gql`
     newspaper: String
     headline: String
     locale: String
+  }
+  type Html {
+    website: String
   }
 
 `;

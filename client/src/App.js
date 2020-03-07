@@ -7,6 +7,8 @@ function App () {
 
   const [headlines, setHeadlines] = useState([]);
 
+  var html = '<h1>Hello, world!</h1>'
+
   useEffect(() => {
     Api.getHeadlines()
       .then(result => {
@@ -23,6 +25,7 @@ function App () {
         <HeadlineList
           headlines={headlines}
         />
+        <div dangerouslySetInnerHTML={{__html: html}} />
       </div>
     </div>
   );

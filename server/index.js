@@ -23,6 +23,8 @@ server.listen({ port: PORT }, () => {
 
 
 storeHeadlines.store();
-// setInterval(() => {
-//   storeHeadlines.store();
-// }, 3600000);
+setInterval(() => {
+  storeHeadlines.store();
+}, 3600000);
+
+//restore data backup
