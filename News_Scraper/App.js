@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Text, View, ScrollView, FlatList, Linking } from 'react-native';
+import { Text, View, StyleSheet, FlatList, Linking } from 'react-native';
 import { AppRegistry } from 'react-native';
 
 import DateTimePicker from '@react-native-community/datetimepicker';
@@ -10,10 +10,11 @@ import { Card, Title, Paragraph, Appbar, Button } from 'react-native-paper';
 
 const theme = {
   ...DefaultTheme,
+  dark: true,
   colors: {
     ...DefaultTheme.colors,
-    primary: 'tomato',
-    accent: 'yellow',
+    primary: '#FF8A65',
+    accent: 'green',
   },
 };
 
@@ -46,9 +47,11 @@ const App = () => {
 
   const onChange = (event, selectedDate) => {
     const currentDate = selectedDate || dateFull;
-    year = selectedDate.getFullYear();
-    month = selectedDate.getMonth() + 1;
-    date = selectedDate.getDate();
+    if (selectedDate) {
+      year = selectedDate.getFullYear();
+      month = selectedDate.getMonth() + 1;
+      date = selectedDate.getDate();
+    }
     fetchData(date, month, year).then(data => setHeadlines(data.data.headline)).catch((error) => {
       console.log("Api call error");
       alert(error.message);
@@ -90,6 +93,7 @@ const App = () => {
               is24Hour={true}
               display="calendar"
               onChange={onChange}
+              maximumDate={new Date()}
             />
           )}
         </Appbar.Header>
@@ -109,6 +113,7 @@ const HeadlineList = ({ headlines }) => {
       <View >
         <FlatList
           data={headlines}
+          contentContainerStyle={style.container}
           renderItem={(item) => <HeadlineCard headline={item} />}
         >
         </FlatList>
@@ -129,28 +134,33 @@ const HeadlineList = ({ headlines }) => {
 const HeadlineCard = ({ headline }) => {
   return (
     <View >
-      <Card onPress={() => handleHelpPress()} style={style.margin}>
+      <Card onPress={() => handleHelpPress()} style={style.card}>
         <Card.Content>
           <Card.Cover source={{ uri: 'https://picsum.photos/700' }} />
-          <Title>{headline.item.newspaper}</Title>
-          <Paragraph>{headline.item.headline}</Paragraph>
-          <Paragraph>{headline.item.day}/{headline.item.month}/{headline.item.year}</Paragraph>
+          <Title style={style.title}>{headline.item.newspaper}</Title>
+          <Paragraph >{headline.item.headline}</Paragraph>
+          <Paragraph style={style.small}>{headline.item.day}/{headline.item.month}/{headline.item.year}</Paragraph>
         </Card.Content>
       </Card>
     </View>
   )
 }
-const style = {
+const style = StyleSheet.create({
   container: {
-    display: "flex"
+    paddingBottom: 300
   },
-  margin: {
+  card: {
+    backgroundColor: "#FBE9E7",
     margin: 10
   },
   title: {
-    fontSize: 32
+    fontSize: 24
+  },
+  small: {
+    fontSize: 10,
+    fontStyle: 'italic'
   }
-}
+});
 
 AppRegistry.registerComponent('MyApplication', () => App);
 
