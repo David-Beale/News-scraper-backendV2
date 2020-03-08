@@ -2,6 +2,7 @@ const { ApolloServer } = require("apollo-server");
 const typeDefs = require("./schema");
 const resolvers = require("./resolvers");
 const storeHeadlines = require("../scraper/store-headlines");
+require('dotenv').config();
 
 require("./db");
 
@@ -16,7 +17,6 @@ const server = new ApolloServer({
 
 const PORT = process.env.PORT || 4000;
 
-console.log("port", PORT);
 server.listen({ port: PORT }, () => {
   console.log(`🚀 Server ready at port: ${PORT}`);
 });

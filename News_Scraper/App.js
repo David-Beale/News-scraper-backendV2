@@ -13,7 +13,7 @@ const theme = {
   dark: true,
   colors: {
     ...DefaultTheme.colors,
-    primary: '#FF8A65',
+    primary: '#BBDEFB',
     accent: 'green',
   },
 };
@@ -21,15 +21,17 @@ const theme = {
 let date = new Date().getDate();
 let month = new Date().getMonth() + 1;
 let year = new Date().getFullYear();
-
+let locale = "UK";
 function handleHelpPress() {
   Linking.openURL(
     'https://github.com'
   );
 }
 
-const fetchData = async (date, month, year) => {
-  return await fetch(`http://10.154.87.48:4000?query={ headline(year: ${year} month:${month} day:${date} locale: "UK" ) { day month year newspaper id headline}}`)
+
+const fetchData = async (date, month, year, locale) => {
+  let url = `http://192.168.0.42:4000?query={ headline(year: ${year} month:${month} day:${date} locale: "${locale ? locale : "UK"}" ) { day month year newspaper id headline}}`;
+  return await fetch(url)
     .then(res => {
       if (res.status < 400) {
         return res.json()
@@ -38,12 +40,13 @@ const fetchData = async (date, month, year) => {
         return Promise().reject();
       }
     });
-}
+};
 
 const App = () => {
   const [headlines, setHeadlines] = useState([]);
   const [dateFull, setDate] = useState(new Date());
   const [show, setShow] = useState(false);
+  const [locale, setLocale] = useState("UK")
 
   const onChange = (event, selectedDate) => {
     const currentDate = selectedDate || dateFull;
@@ -52,12 +55,24 @@ const App = () => {
       month = selectedDate.getMonth() + 1;
       date = selectedDate.getDate();
     }
-    fetchData(date, month, year).then(data => setHeadlines(data.data.headline)).catch((error) => {
+    fetchData(date, month, year, locale).then(data => setHeadlines(data.data.headline)).catch((error) => {
       console.log("Api call error");
       alert(error.message);
     });
     setShow(Platform.OS === 'ios');
     setDate(currentDate);
+  };
+
+  const changeLocale = () => {
+    if (locale === "ES") {
+      setLocale("UK");
+    } else {
+      setLocale("ES");
+    }
+    fetchData(date, month, year, locale).then(data => setHeadlines(data.data.headline)).catch((error) => {
+      console.log("Api call error");
+      alert(error.message);
+    });
   };
 
 
@@ -79,17 +94,20 @@ const App = () => {
       <View>
         <Appbar.Header>
           <Appbar.Content
-            title="News Feeds"
+            title={"News Feeds " + locale}
           />
-          <View>
-            <Button mode={"contained"} onPress={() => setShow(true)}>{date}/{month}/{year}</Button>
+          <View >
+            <Button style={style.headerButton} mode={"contained"} onPress={() => changeLocale()}>{locale}</Button>
+          </View>
+          <View >
+            <Button style={style.headerButton} mode={"contained"} onPress={() => setShow(true)}>{date}/{month}/{year}</Button>
           </View>
           {show && (
             <DateTimePicker
               testID="dateTimePicker"
               timeZoneOffsetInMinutes={0}
               value={dateFull}
-              mode={'date'}
+              mode="date"
               is24Hour={true}
               display="calendar"
               onChange={onChange}
@@ -150,7 +168,7 @@ const style = StyleSheet.create({
     paddingBottom: 300
   },
   card: {
-    backgroundColor: "#FBE9E7",
+    backgroundColor: "#E3F2FD",
     margin: 10
   },
   title: {
@@ -159,6 +177,11 @@ const style = StyleSheet.create({
   small: {
     fontSize: 10,
     fontStyle: 'italic'
+  },
+  headerButton: {
+    backgroundColor: "#B3E5FC",
+    marginLeft: 7,
+    marginRight: 7
   }
 });
 
