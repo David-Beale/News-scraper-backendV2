@@ -67,24 +67,21 @@ const App = () => {
 
   const changeLocale = () => {
     let instanceOfLocale = locale
-    console.log("first", instanceOfLocale)
     if (locale !== "UK") {
       setLocale("UK");
       instanceOfLocale = "UK"
-      
+
     } else {
       setLocale("ES");
       instanceOfLocale = "ES"
     }
-    console.log("second", instanceOfLocale)
     fetchData(date, month, year, instanceOfLocale).then(data => {
       setHeadlines(data.data.headline)
-      console.log("third",instanceOfLocale)
     })
-    .catch((error) => {
-      console.log("Api call error");
-      alert(error.message);
-    });
+      .catch((error) => {
+        console.log("Api call error");
+        alert(error.message);
+      });
   };
 
 
