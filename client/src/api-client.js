@@ -3,7 +3,7 @@ const BASE_URL = 'http://localhost:4000'
 
 export default {
   getHeadlines: () => {
-    return fetchRequest(`graphql?query={ headline(year: 2020 month:3 day:5 locale: "UK" )
+    return fetchRequest(`graphql?query={ headline(year: 2020 month:3 day:7 locale: "UK" )
       {day 
       month 
       year 
@@ -11,6 +11,12 @@ export default {
       id
       headline }
     }`);
+  },
+  getWebsite: () => {
+    return fetchRequest(`graphql?query={  html(name:"Daily Mail"){
+      website
+    }
+  }`);
   },
 };
 

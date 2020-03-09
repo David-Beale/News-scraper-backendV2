@@ -1,5 +1,6 @@
 const Headlines = require("./models/headlines");
-const fs = require('fs')
+const SiteData = require("./models/site-data");
+const got = require('got');
 
 const resolvers = {
   Query: {
@@ -7,14 +8,18 @@ const resolvers = {
       if (Object.keys(args).length) {
         return await Headlines.find(args);
       } else {
-        return await Headlines.find({}).exec();
+        return await Headlines.find();
       }
     },
     html: async (_, args) => {
       if (Object.keys(args).length) {
-        const html = JSON.stringify(fs.readFileSync('../spec/bbc.html','utf8'))
-        return {website:html}
-      } 
+        const siteData = await SiteData.findOne(args);
+        const {website} = siteData;
+        html = await got(website);
+        return {website: html.body}
+      }else {
+        return await SiteData.find();
+      }
     }
   }
 };

@@ -6,7 +6,6 @@
   "scripts": {
     "test": "jasmine",
     "start": "node /server/index.js"
-    
   },
   "author": "",
   "license": "ISC",
@@ -25,8 +24,10 @@
     "graphql-date": "^1.0.3",
     "hash-sum": "^2.0.0",
     "html-to-text": "^5.1.1",
+    "jquery": "^3.4.1",
     "moment": "^2.24.0",
     "mongoose": "^5.8.4",
+    "react-render-html": "^0.6.0",
     "sgrape": "^0.1.5",
     "underscore": "^1.9.2"
   },

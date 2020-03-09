@@ -6,6 +6,7 @@ data.forEach(async (obj) => {
   try {
     let check = await SiteData.exists({ website: obj.website })
     if(!check){
+      console.log('saving')
       const itemToSave = new SiteData ({
         website: obj.website,
         name: obj.name,
@@ -15,7 +16,7 @@ data.forEach(async (obj) => {
       itemToSave.save(function (err) {
         if (err) throw err;
       });
-    } 
+    } else console.log('duplicate found')
   } catch (error) {
     console.log(error)
   }

@@ -24,3 +24,17 @@
   font-weight: 700;
   font-size: 1.7rem;
 }
+.addNew{
+  position:fixed;
+  background-color: white;
+  top:0;
+  left:0;
+  width:100vw;
+  border: solid black 1px;
+  height:15vh;
+  z-index: 2;
+}
+.external {
+  position: relative;
+  z-index: 1;
+}

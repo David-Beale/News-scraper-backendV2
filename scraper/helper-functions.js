@@ -12,6 +12,10 @@ module.exports = {
       try {
         const response = await got(link);
         const data = response.body;
+        // if(link === 'https://www.dailymail.co.uk/home/index.html' ){
+        //   console.log('writing')
+        //   fs.writeFileSync('dailyMail.html', data)
+        // }
         return data
       } catch (error) {
         console.log(error.response.body);
