@@ -21,7 +21,7 @@ const theme = {
 let date = new Date().getDate();
 let month = new Date().getMonth() + 1;
 let year = new Date().getFullYear();
-let locale = "UK";
+
 function handleHelpPress() {
   Linking.openURL(
     'https://github.com'
@@ -30,7 +30,7 @@ function handleHelpPress() {
 
 
 const fetchData = async (date, month, year, locale) => {
-  let url = `http://192.168.0.42:4000?query={ headline(year: ${year} month:${month} day:${date} locale: "${locale ? locale : "UK"}" ) { day month year newspaper id headline}}`;
+  let url = `http://localhost:4000?query={ headline(year: ${year} month:${month} day:${date} locale: "${locale ? locale : "UK"}" ) { day month year newspaper id headline}}`;
   return await fetch(url)
     .then(res => {
       if (res.status < 400) {
@@ -64,12 +64,22 @@ const App = () => {
   };
 
   const changeLocale = () => {
-    if (locale === "ES") {
+    let instanceOfLocale = locale
+    console.log("first", instanceOfLocale)
+    if (locale !== "UK") {
       setLocale("UK");
+      instanceOfLocale = "UK"
+      
     } else {
       setLocale("ES");
+      instanceOfLocale = "ES"
     }
-    fetchData(date, month, year, locale).then(data => setHeadlines(data.data.headline)).catch((error) => {
+    console.log("second", instanceOfLocale)
+    fetchData(date, month, year, instanceOfLocale).then(data => {
+      setHeadlines(data.data.headline)
+      console.log("third",instanceOfLocale)
+    })
+    .catch((error) => {
       console.log("Api call error");
       alert(error.message);
     });
