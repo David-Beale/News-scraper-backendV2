@@ -21,16 +21,15 @@ const theme = {
 let date = new Date().getDate();
 let month = new Date().getMonth() + 1;
 let year = new Date().getFullYear();
-let locale = "UK";
-function handleHelpPress() {
-  Linking.openURL(
-    'https://github.com'
-  );
+
+function handleHelpPress(url) {
+
+  Linking.openURL(url);
 }
 
 
 const fetchData = async (date, month, year, locale) => {
-  let url = `http://localhost:4000?query={ headline(year: ${year} month:${month} day:${date} locale: "${locale ? locale : "UK"}" ) { day month year newspaper id headline}}`;
+  let url = `http://10.154.87.160:4000?query={ headline(year: ${year} month:${month} day:${date} locale: "${locale ? locale : "UK"}" ) { day month year newspaper id headline website}}`;
   return await fetch(url)
     .then(res => {
       if (res.status < 400) {
@@ -43,10 +42,12 @@ const fetchData = async (date, month, year, locale) => {
 };
 
 const App = () => {
+
   const [headlines, setHeadlines] = useState([]);
   const [dateFull, setDate] = useState(new Date());
   const [show, setShow] = useState(false);
   const [locale, setLocale] = useState("UK")
+
 
   const onChange = (event, selectedDate) => {
     const currentDate = selectedDate || dateFull;
@@ -66,13 +67,20 @@ const App = () => {
   };
 
   const changeLocale = () => {
-    if (locale === "ES") {
+    let instanceOfLocale = locale
+    if (locale !== "UK") {
       setLocale("UK");
+      instanceOfLocale = "UK"
+
     } else {
       setLocale("ES");
+      instanceOfLocale = "ES"
     }
-    fetchData(date, month, year, locale)
-      .then(data => setHeadlines(data.data.headline))
+
+    fetchData(date, month, year, instanceOfLocale).then(data => {
+      setHeadlines(data.data.headline)
+    })
+
       .catch((error) => {
         console.log("Api call error");
         alert(error.message);
@@ -93,6 +101,8 @@ const App = () => {
       throw e;
     }
   }, []);
+
+
   return (
     <PaperProvider theme={theme}>
       <View>
@@ -154,9 +164,10 @@ const HeadlineList = ({ headlines }) => {
 
 
 const HeadlineCard = ({ headline }) => {
+
   return (
     <View >
-      <Card onPress={() => handleHelpPress()} style={style.card}>
+      <Card onPress={() => handleHelpPress(headline.item.website)} style={style.card}>
         <Card.Content>
           <Card.Cover source={{ uri: 'https://picsum.photos/700' }} />
           <Title style={style.title}>{headline.item.newspaper}</Title>
@@ -167,6 +178,8 @@ const HeadlineCard = ({ headline }) => {
     </View>
   )
 }
+
+
 const style = StyleSheet.create({
   container: {
     paddingBottom: 300

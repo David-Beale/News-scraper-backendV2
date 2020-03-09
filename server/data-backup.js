@@ -66,9 +66,9 @@ module.exports = [
     website: 'https://www.dailymail.co.uk/home/index.html',
     name: 'Daily Mail',
     selector: 'h2.linkro-darkred a',
+    imageSelector: '.articletext a img',
     country: 'UK'
   },
-
   {
     website: 'https://www.standard.co.uk/?CMP=ILC-refresh',
     name: 'Standard',

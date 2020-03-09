@@ -14,13 +14,14 @@ module.exports = {
 				const data = response.body;
 				return data
 			} catch (error) {
-				console.log(error.response.body);
+				console.log('get headline error', error.response.body[4]);
 			}
 		}
 	},
-	parseHeadline: function (data, selector) {
+	parseHeadline: function (data, selector, imageSelector) {
 		const $ = cheerio.load(`${data}`);
 		const headline = $(selector).first().text().trim();
+		const image = $(imageSelector);
 		return headline;
 	},
 	getDate: function () {

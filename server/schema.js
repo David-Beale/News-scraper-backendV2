@@ -15,6 +15,8 @@ const typeDefs = gql`
     newspaper: String
     headline: String
     locale: String
+    website: String
+    image: String
   }
   type Html {
     website: String
