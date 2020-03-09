@@ -43,10 +43,12 @@ const fetchData = async (date, month, year, locale) => {
 };
 
 const App = () => {
+
   const [headlines, setHeadlines] = useState([]);
   const [dateFull, setDate] = useState(new Date());
   const [show, setShow] = useState(false);
   const [locale, setLocale] = useState("UK")
+
 
   const onChange = (event, selectedDate) => {
     const currentDate = selectedDate || dateFull;
@@ -89,6 +91,8 @@ const App = () => {
       throw e;
     }
   }, []);
+
+
   return (
     <PaperProvider theme={theme}>
       <View>
@@ -163,6 +167,8 @@ const HeadlineCard = ({ headline }) => {
     </View>
   )
 }
+
+
 const style = StyleSheet.create({
   container: {
     paddingBottom: 300
