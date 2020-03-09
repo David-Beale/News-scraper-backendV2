@@ -30,7 +30,7 @@ function handleHelpPress() {
 
 
 const fetchData = async (date, month, year, locale) => {
-  let url = `http://192.168.0.42:4000?query={ headline(year: ${year} month:${month} day:${date} locale: "${locale ? locale : "UK"}" ) { day month year newspaper id headline}}`;
+  let url = `http://localhost:4000?query={ headline(year: ${year} month:${month} day:${date} locale: "${locale ? locale : "UK"}" ) { day month year newspaper id headline}}`;
   return await fetch(url)
     .then(res => {
       if (res.status < 400) {
@@ -55,10 +55,12 @@ const App = () => {
       month = selectedDate.getMonth() + 1;
       date = selectedDate.getDate();
     }
-    fetchData(date, month, year, locale).then(data => setHeadlines(data.data.headline)).catch((error) => {
-      console.log("Api call error");
-      alert(error.message);
-    });
+    fetchData(date, month, year, locale)
+      .then(data => setHeadlines(data.data.headline))
+      .catch((error) => {
+        console.log("Api call error");
+        alert(error.message);
+      });
     setShow(Platform.OS === 'ios');
     setDate(currentDate);
   };
@@ -69,10 +71,12 @@ const App = () => {
     } else {
       setLocale("ES");
     }
-    fetchData(date, month, year, locale).then(data => setHeadlines(data.data.headline)).catch((error) => {
-      console.log("Api call error");
-      alert(error.message);
-    });
+    fetchData(date, month, year, locale)
+      .then(data => setHeadlines(data.data.headline))
+      .catch((error) => {
+        console.log("Api call error");
+        alert(error.message);
+      });
   };
 
 
