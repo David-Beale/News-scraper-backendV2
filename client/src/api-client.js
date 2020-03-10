@@ -1,9 +1,8 @@
-// const BASE_URL = 'https://cw-events-092017.herokuapp.com'
 const BASE_URL = 'http://localhost:4000'
 
 export default {
   getHeadlines: () => {
-    return fetchRequest(`graphql?query={ headline(year: 2020 month:3 day:7 locale: "UK" )
+    return fetchRequest(`graphql?query={ headline(year: 2020 month:3 day:9 locale: "UK" )
       {day 
       month 
       year 
@@ -13,10 +12,27 @@ export default {
     }`);
   },
   getWebsite: () => {
-    return fetchRequest(`graphql?query={  html(name:"Daily Mail"){
+    return fetchRequest(`graphql?query={  html(name:"The Guardian"){
+      htmlBody
       website
+      name
+      country
     }
   }`);
+  },
+  saveNewFeed: (webLink, webName, webCountry,titlePath, root, summaryPath, linkPath, imagePath) => {
+    titlePath = JSON.stringify(titlePath)
+    summaryPath = JSON.stringify(summaryPath)
+    linkPath = JSON.stringify(linkPath)
+    imagePath = JSON.stringify(imagePath)
+    const options = {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(
+        {query: `mutation add { addFeed(website: ${webLink} name: ${webName} titlePath: ${titlePath} titleRoot: "${root}" summaryPath: ${summaryPath} linkPath: ${linkPath} imagePath: ${imagePath} country:${webCountry}) { website } }`})
+      }
+      console.log(options.body)
+    return fetchRequest(``, options);
   },
 };
 

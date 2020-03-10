@@ -9,6 +9,9 @@ const headlineSchema = new Schema({
   time: { type: String, allowNull: false},
   newspaper: { type: String, allowNull: false},
   headline: { type: String, allowNull: false},
+  summary: { type: String, allowNull: true},
+  link: { type: String, allowNull: true},
+  image: { type: String, allowNull: true},
   locale: { type: String, allowNull: false}
 });
 

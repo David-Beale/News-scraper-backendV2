@@ -18,22 +18,73 @@ module.exports = {
         // }
         return data
       } catch (error) {
-        console.log(error.response.body);
+        console.log(error);
       }
     }
   },
-  parseHeadline: function (data, selector) {
+  parseHeadline: function (data, selector, titlePath, titleRoot, summaryPath, linkPath, imagePath, website) {
+
     const $ = cheerio.load(`${data}`);
-    const headline = $(selector).first().text().trim();
+    let headline;
+    let summary;
+    let link;
+    let imageLink;
+    if (selector) {
+      headline = $(selector).first().text().trim();
+    } else if (titlePath.length) {
+      let targetNode = $(titleRoot)
+      let nextNode = targetNode.children()[titlePath[titlePath.length - 2]]
+      for (let i = titlePath.length - 3; i >= 0; i--) {
+        nextNode = nextNode.children.filter(child => child.type === 'tag' || child.type === 'script')[titlePath[i]]
+      }
+      headline = nextNode.children.filter(child => {
+        return child.type === 'text' && child.data.trim().length > 5
+      })[0].data.trim();
+      console.log(headline)
+    }
+    if (summaryPath.length) {
+      let targetNode = $(titleRoot)
+      let nextNode = targetNode.children()[summaryPath[summaryPath.length - 2]]
+      for (let i = summaryPath.length - 3; i >= 0; i--) {
+        nextNode = nextNode.children.filter(child => child.type === 'tag' || child.type === 'script')[summaryPath[i]]
+      }
+      let children = nextNode.children.filter(child => {
+        return child.type === 'text' && child.data.trim().length > 5
+      })
+      summary = children[0].data.trim();
+      console.log(summary)
+    }
+    if (linkPath.length) {
+      let targetNode = $(titleRoot)
+      let nextNode = targetNode.children()[linkPath[linkPath.length - 2]]
+      for (let i = linkPath.length - 3; i >= 0; i--) {
+        nextNode = nextNode.children.filter(child => child.type === 'tag' || child.type === 'script')[linkPath[i]]
+      }
+      link = website + nextNode.attribs.href;
+      console.log(link)
+    }
+    if (imagePath.length) {
+      let targetNode = $(titleRoot)
+      let nextNode = targetNode.children()[imagePath[imagePath.length - 2]]
+      for (let i = imagePath.length - 3; i >= 0; i--) {
+        nextNode = nextNode.children.filter(child => child.type === 'tag' || child.type === 'script')[imagePath[i]]
+      }
+      if(nextNode.attribs.src && nextNode.attribs.src[0] === 'h'){
+        imageLink = nextNode.attribs.src
+      } else {
+        imageLink = nextNode.attribs["data-src"]
+      }
+      console.log(imageLink)
+    }
     return headline;
   },
   getDate: function () {
     return [Number(moment(Date.now()).format("DD")), Number(moment(Date.now()).format("MM")),
     Number(moment(Date.now()).format("YYYY")), moment(Date.now()).format("LT")]
   },
-  saveData: async function (headlineArray, saveCounter, duplicateCounter, test=false) {
+  saveData: async function (headlineArray, saveCounter, duplicateCounter, test = false) {
     for (let i = 0; i < headlineArray.length; i++) {
-      if(test) headlineArray[i].hash = Date.now();
+      if (test) headlineArray[i].hash = Date.now();
       let bool = await Headlines.exists({ hash: headlineArray[i].hash })
       if (bool) {
         duplicateCounter++
