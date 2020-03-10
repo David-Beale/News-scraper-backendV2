@@ -6,14 +6,12 @@ const typeDefs = gql`
     html (name: String): Html
   }
   type Mutation {
-    addFeed (website: String, name: String, titlePath: [Int], titleRoot: String, summaryPath: [Int], linkPath: [Int], imagePath: [Int], country: String): Feed
+    addFeed (website: String, name: String, titlePath: [Int], titleRoot: String, summaryPath: [Int], linkPath: [Int], imagePath: [Int], imageTag: String country: String): Feed
   }
 
   type Feed {
     website: String
     name: String
-    selectorRoot: String
-    selectorPath: [Int]
     country: String
   }
   type Headlines {

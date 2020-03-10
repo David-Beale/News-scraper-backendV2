@@ -1,5 +1,8 @@
 
 $(() => {
-  $("h1").load('./spec/bbc.html')
+  $( "object" ).on( "click", function() {
+    // e.preventDefault();
+    console.log( $( this ));
+  });
 })
 {/* <div>Hello There</div> */}

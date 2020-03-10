@@ -10,6 +10,7 @@ const siteDataSchema = new Schema({
   summaryPath: {type: [], allowNull: true },
   linkPath: {type: [], allowNull: true },
   imagePath: {type: [], allowNull: true },
+  imageTag: {type: String, allowNull: true },
   country: { type: String, allowNull: false},
 });
 

@@ -22,9 +22,21 @@ module.exports = {
       }
     }
   },
-  parseHeadline: function (data, selector, titlePath, titleRoot, summaryPath, linkPath, imagePath, website) {
+  parseHeadline: function (data, selector, titlePath, titleRoot, summaryPath, linkPath, imagePath, website, imageTag) {
 
     const $ = cheerio.load(`${data}`);
+    let images = Object.values($('img'))
+    try {
+      images.forEach(image => {
+        if (image.attribs && image.attribs['data-src'] && image.attribs['data-src'][0] === 'h') {
+          image.attribs['src'] = image.attribs['data-src']
+        } else if (image.parent && image.parent.attribs && image.parent.attribs['data-src'] && image.parent.attribs['data-src'][0] === 'h') {
+          image.attribs['src'] = image.parent.attribs['data-src']
+        }
+      })
+    } catch (error) {
+      console.log(error)
+    }
     let headline;
     let summary;
     let link;
@@ -40,7 +52,7 @@ module.exports = {
       headline = nextNode.children.filter(child => {
         return child.type === 'text' && child.data.trim().length > 5
       })[0].data.trim();
-      console.log(headline)
+      console.log('headline',headline)
     }
     if (summaryPath.length) {
       let targetNode = $(titleRoot)
@@ -52,7 +64,7 @@ module.exports = {
         return child.type === 'text' && child.data.trim().length > 5
       })
       summary = children[0].data.trim();
-      console.log(summary)
+      console.log('summary',summary)
     }
     if (linkPath.length) {
       let targetNode = $(titleRoot)
@@ -61,7 +73,7 @@ module.exports = {
         nextNode = nextNode.children.filter(child => child.type === 'tag' || child.type === 'script')[linkPath[i]]
       }
       link = website + nextNode.attribs.href;
-      console.log(link)
+      console.log('link',link)
     }
     if (imagePath.length) {
       let targetNode = $(titleRoot)
@@ -69,12 +81,8 @@ module.exports = {
       for (let i = imagePath.length - 3; i >= 0; i--) {
         nextNode = nextNode.children.filter(child => child.type === 'tag' || child.type === 'script')[imagePath[i]]
       }
-      if(nextNode.attribs.src && nextNode.attribs.src[0] === 'h'){
-        imageLink = nextNode.attribs.src
-      } else {
-        imageLink = nextNode.attribs["data-src"]
-      }
-      console.log(imageLink)
+        imageLink = nextNode.attribs[imageTag]
+      console.log('image',imageLink)
     }
     return headline;
   },
