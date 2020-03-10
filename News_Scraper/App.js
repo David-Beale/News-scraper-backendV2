@@ -6,7 +6,7 @@ import HTML from 'react-native-render-html';
 import DateTimePicker from '@react-native-community/datetimepicker';
 
 import { DefaultTheme, Provider as PaperProvider } from 'react-native-paper';
-import { Card, Title, Paragraph, Appbar, Button } from 'react-native-paper';
+import { Card, Title, Paragraph, Appbar, Button, TextInput } from 'react-native-paper';
 
 
 const theme = {
@@ -50,8 +50,30 @@ const App = () => {
   const [locale, setLocale] = useState("UK");
   const [loadhtml, setloadhtml] = useState(false);
   const [loadingHeadlines, setLoadingHeadlines] = useState(true);
+  const [formState, setFormState] = useState(0);
+  const [formValue, setFormValue] = useState();
 
-  console.log(loadhtml)
+
+  let formLabel = '';
+  switch (formState) {
+    case 0:
+      formLabel = "input website address"
+      break;
+    case 1:
+      formLabel = "select title"
+      break;
+    case 2:
+      formLabel = "select summary"
+      break;
+    case 3:
+      formLabel = "select image"
+      break;
+    default:
+      break;
+  }
+
+
+
   const onChange = (event, selectedDate) => {
     const currentDate = selectedDate || dateFull;
     if (selectedDate) {
@@ -140,7 +162,13 @@ const App = () => {
             />
           )}
         </Appbar.Header>
-        <HeadlineList headlines={headlines} loadhtml={loadhtml} loadingHeadlines={loadingHeadlines} />
+        <HeadlineList
+          headlines={headlines}
+          loadhtml={loadhtml}
+          loadingHeadlines={loadingHeadlines}
+          formValue={formValue}
+          formLabel={formLabel}
+        />
       </View>
     </PaperProvider>
   );
@@ -149,14 +177,19 @@ const App = () => {
 
 
 
-const HeadlineList = ({ headlines, loadhtml, loadingHeadlines }) => {
+const HeadlineList = ({ headlines, loadhtml, loadingHeadlines, formState, formValue, formLabel }) => {
 
   if (!loadingHeadlines) {
     return (
       <View >
         {loadhtml && <View>
-          <View style={{ height: 799 }}>
-            <HTML uri={'https://www.bbc.co.uk'}></HTML>
+          <View >
+            <TextInput
+              label={formLabel}
+              value={formValue}
+              onChangeText={text => { e.preventDefault(); setFormValue(text) }}
+            />
+
           </View>
         </View>}
         <FlatList
