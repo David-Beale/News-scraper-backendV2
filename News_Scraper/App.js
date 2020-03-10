@@ -51,7 +51,7 @@ const App = () => {
   const [loadhtml, setloadhtml] = useState(false);
   const [loadingHeadlines, setLoadingHeadlines] = useState(true);
   const [formState, setFormState] = useState(0);
-  const [formValue, setFormValue] = useState();
+
 
 
   let formLabel = '';
@@ -166,8 +166,9 @@ const App = () => {
           headlines={headlines}
           loadhtml={loadhtml}
           loadingHeadlines={loadingHeadlines}
-          formValue={formValue}
           formLabel={formLabel}
+          formState={formState}
+          setFormState={setFormState}
         />
       </View>
     </PaperProvider>
@@ -177,8 +178,8 @@ const App = () => {
 
 
 
-const HeadlineList = ({ headlines, loadhtml, loadingHeadlines, formState, formValue, formLabel }) => {
-
+const HeadlineList = ({ headlines, loadhtml, loadingHeadlines, formState, formLabel, setFormState }) => {
+  const [formValue, setFormValue] = useState('');
   if (!loadingHeadlines) {
     return (
       <View >
@@ -187,7 +188,7 @@ const HeadlineList = ({ headlines, loadhtml, loadingHeadlines, formState, formVa
             <TextInput
               label={formLabel}
               value={formValue}
-              onChangeText={text => { e.preventDefault(); setFormValue(text) }}
+              onChangeText={text => { setFormValue(text); console.log(formValue) }}
             />
 
           </View>
