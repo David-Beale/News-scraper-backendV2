@@ -115,17 +115,26 @@ const App = () => {
   return (
     <PaperProvider theme={theme}>
       <View>
-        <Appbar.Header>
-          <Avatar.Image size={47} source={require('./assets/icon.png')} />
+        <Appbar.Header style={{ justifyContent: "space-between" }}>
+          <Avatar.Image size={42} source={require('./assets/newsFeeds.png')} style={{ marginLeft: 12 }} />
           {/* <Appbar.Content
             title={"News Feeds " + locale}
           /> */}
-
-          <View >
-            <Button style={style.headerButton} mode={"contained"} onPress={() => changeLocale()}>{locale}</Button>
-          </View>
-          <View >
-            <Button style={style.headerButton} mode={"contained"} onPress={() => setShow(true)}>{date}/{month}/{year}</Button>
+          <View style={{ flexDirection: "row" }} >
+            <Button
+              style={style.headerButton}
+              mode={"outlined"}
+              onPress={() => changeLocale()}
+            >
+              {locale}
+            </Button>
+            <Button
+              style={style.headerButton}
+              mode={"outlined"}
+              onPress={() => setShow(true)}
+            >
+              {date}/{month}/{year}
+            </Button>
           </View>
           {show && (
             <DateTimePicker
@@ -200,12 +209,16 @@ const HeadlineList = ({ headlines, loadhtml, loadingHeadlines, setloadhtml }) =>
               value={formValue}
               onChangeText={text => { setFormValue(text); console.log(formValue) }}
             />
-            <View style={{ flexDirection: "row" }}>
+            <View style={{ flexDirection: "row", height: 60 }}>
               <Button
+                mode="outlined"
+                style={{ margin: 12 }}
                 onPress={() => { localFormState++; setFormState(localFormState); setFormValue('') }}
                 disabled={formState >= 3}
               >Next</Button>
               <Button
+                mode="outlined"
+                style={{ margin: 12 }}
                 onPress={() => { setFormState(0); setloadhtml(false) }}
               >Submit</Button>
             </View>
