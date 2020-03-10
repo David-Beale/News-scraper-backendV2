@@ -1,12 +1,12 @@
 import React, { useState, useEffect } from 'react';
-import { Text, View, StyleSheet, FlatList, Linking, ScrollView, Image } from 'react-native';
+import { Text, View, StyleSheet, FlatList, Linking, ScrollView, Image, ToolbarAndroid } from 'react-native';
 import { AppRegistry } from 'react-native';
 
 import HTML from 'react-native-render-html';
 import DateTimePicker from '@react-native-community/datetimepicker';
 
 import { DefaultTheme, Provider as PaperProvider } from 'react-native-paper';
-import { Card, Title, Paragraph, Appbar, Button, TextInput } from 'react-native-paper';
+import { Card, Title, Paragraph, Appbar, Button, TextInput, Surface, FAB, ActivityIndicator, Avatar } from 'react-native-paper';
 
 
 const theme = {
@@ -14,8 +14,8 @@ const theme = {
   dark: true,
   colors: {
     ...DefaultTheme.colors,
-    primary: '#BBDEFB',
-    accent: 'green',
+    primary: '#2196F3',
+    accent: '#f44336',
   },
 };
 
@@ -116,12 +116,11 @@ const App = () => {
     <PaperProvider theme={theme}>
       <View>
         <Appbar.Header>
-          <Appbar.Content
+          <Avatar.Image size={47} source={require('./assets/icon.png')} />
+          {/* <Appbar.Content
             title={"News Feeds " + locale}
-          />
-          <View>
-            <Button mode={"contained"} onPress={() => showHtml()}>+</Button>
-          </View>
+          /> */}
+
           <View >
             <Button style={style.headerButton} mode={"contained"} onPress={() => changeLocale()}>{locale}</Button>
           </View>
@@ -148,6 +147,13 @@ const App = () => {
           setloadhtml={setloadhtml}
         />
       </View>
+      <FAB
+        style={style.fab}
+        big
+        icon="plus"
+        visible={!loadhtml}
+        onPress={() => showHtml()}
+      />
     </PaperProvider>
   );
 }
@@ -198,11 +204,9 @@ const HeadlineList = ({ headlines, loadhtml, loadingHeadlines, setloadhtml }) =>
               <Button
                 onPress={() => { localFormState++; setFormState(localFormState); setFormValue('') }}
                 disabled={formState >= 3}
-                mode="contained"
               >Next</Button>
               <Button
                 onPress={() => { setFormState(0); setloadhtml(false) }}
-                mode="contained"
               >Submit</Button>
             </View>
           </View>
@@ -211,17 +215,13 @@ const HeadlineList = ({ headlines, loadhtml, loadingHeadlines, setloadhtml }) =>
           data={headlines}
           contentContainerStyle={style.container}
           renderItem={(item) => <HeadlineCard headline={item} />}
-        >
-        </FlatList>
+        />
       </View >
     )
   } else {
     return (
       <View style={style.loadingContainer}>
-        <Image
-          style={{ width: 400, height: 100, marginTop: 300 }}
-          source={{ uri: 'https://tutorials.cloudboost.io/public/img/loading.gif' }}
-        />
+        <ActivityIndicator style={{ marginTop: 200 }} size="large" animating={true} color={"red"} />
       </View>
     )
   }
@@ -250,11 +250,11 @@ const HeadlineCard = ({ headline }) => {
 
 const style = StyleSheet.create({
   container: {
-    paddingBottom: 300
+    paddingBottom: 250
   },
   card: {
-    backgroundColor: "#E3F2FD",
-    margin: 10
+    margin: 10,
+    elevation: 7
   },
   title: {
     fontSize: 24
@@ -273,6 +273,12 @@ const style = StyleSheet.create({
     justifyContent: "center",
     alignItems: "center",
     flexDirection: "column"
+  },
+  fab: {
+    position: 'absolute',
+    bottom: 0,
+    right: 0,
+    margin: 16
   }
 });
 
