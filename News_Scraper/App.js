@@ -196,7 +196,7 @@ const HeadlineList = ({ headlines, loadhtml, loadingHeadlines, setloadhtml }) =>
             />
             <View style={{ flexDirection: "row" }}>
               <Button
-                onPress={() => { localFormState++; setFormState(localFormState) }}
+                onPress={() => { localFormState++; setFormState(localFormState); setFormValue('') }}
                 disabled={formState >= 3}
                 mode="contained"
               >Next</Button>
