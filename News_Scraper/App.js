@@ -43,34 +43,13 @@ const fetchData = async (date, month, year, locale) => {
 };
 
 const App = () => {
-
+  console.log('render app')
   const [headlines, setHeadlines] = useState([]);
   const [dateFull, setDate] = useState(new Date());
   const [show, setShow] = useState(false);
   const [locale, setLocale] = useState("UK");
   const [loadhtml, setloadhtml] = useState(false);
   const [loadingHeadlines, setLoadingHeadlines] = useState(true);
-  const [formState, setFormState] = useState(0);
-
-
-
-  let formLabel = '';
-  switch (formState) {
-    case 0:
-      formLabel = "input website address"
-      break;
-    case 1:
-      formLabel = "select title"
-      break;
-    case 2:
-      formLabel = "select summary"
-      break;
-    case 3:
-      formLabel = "select image"
-      break;
-    default:
-      break;
-  }
 
 
 
@@ -140,7 +119,7 @@ const App = () => {
           <Appbar.Content
             title={"News Feeds " + locale}
           />
-          <View style={style.loadingContainer}>
+          <View>
             <Button mode={"contained"} onPress={() => showHtml()}>+</Button>
           </View>
           <View >
@@ -166,9 +145,7 @@ const App = () => {
           headlines={headlines}
           loadhtml={loadhtml}
           loadingHeadlines={loadingHeadlines}
-          formLabel={formLabel}
-          formState={formState}
-          setFormState={setFormState}
+          setloadhtml={setloadhtml}
         />
       </View>
     </PaperProvider>
@@ -178,8 +155,35 @@ const App = () => {
 
 
 
-const HeadlineList = ({ headlines, loadhtml, loadingHeadlines, formState, formLabel, setFormState }) => {
+const HeadlineList = ({ headlines, loadhtml, loadingHeadlines, setloadhtml }) => {
+
+  console.log('render headline list')
+
   const [formValue, setFormValue] = useState('');
+  const [formState, setFormState] = useState(0);
+
+
+
+  let formLabel = '';
+  switch (formState) {
+    case 0:
+      formLabel = "input website address"
+      break;
+    case 1:
+      formLabel = "select title"
+      break;
+    case 2:
+      formLabel = "select summary"
+      break;
+    case 3:
+      formLabel = "select image"
+      break;
+    default:
+      break;
+  }
+
+  let localFormState = formState;
+
   if (!loadingHeadlines) {
     return (
       <View >
@@ -190,7 +194,17 @@ const HeadlineList = ({ headlines, loadhtml, loadingHeadlines, formState, formLa
               value={formValue}
               onChangeText={text => { setFormValue(text); console.log(formValue) }}
             />
-
+            <View style={{ flexDirection: "row" }}>
+              <Button
+                onPress={() => { localFormState++; setFormState(localFormState) }}
+                disabled={formState >= 3}
+                mode="contained"
+              >Next</Button>
+              <Button
+                onPress={() => { setFormState(0); setloadhtml(false) }}
+                mode="contained"
+              >Submit</Button>
+            </View>
           </View>
         </View>}
         <FlatList
@@ -216,6 +230,9 @@ const HeadlineList = ({ headlines, loadhtml, loadingHeadlines, formState, formLa
 
 
 const HeadlineCard = ({ headline }) => {
+
+  console.log('render headline card')
+
   return (
     <View >
       <Card onPress={() => handleHelpPress(headline.item.website)} style={style.card}>
