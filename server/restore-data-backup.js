@@ -3,6 +3,8 @@ const SiteData = require("./models/site-data")
 const data = require('./data-backup')
 
 data.forEach(async (obj) => {
+  console.log('loaded')
+  console.log(obj)
   try {
     let check = await SiteData.exists({ website: obj.website })
     if (!check) {
@@ -16,6 +18,7 @@ data.forEach(async (obj) => {
       itemToSave.save(function (err) {
         if (err) throw err;
       });
+      console.log('worked')
     }
   } catch (error) {
     console.log(error)

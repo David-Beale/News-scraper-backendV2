@@ -8,8 +8,9 @@ async function fetchHeadlines(date, data, test) {
   const [day, month, year, time] = date;
   const headlinesArray = Promise.all(data.map(async (newspaper) => {
     const html = await helper.getHeadline(newspaper.website, test)
-    const image = helper.parseHeadline(html, newspaper.imageSelector);
+    const image = newspaper.imageSelector && helper.parseImage(html, newspaper.imageSelector);
     const headline = helper.parseHeadline(html, newspaper.selector)
+
     const headlines = new Headlines({
       hash: hashSum(`${newspaper.name}${headline}`),
       day,
@@ -19,7 +20,8 @@ async function fetchHeadlines(date, data, test) {
       newspaper: newspaper.name,
       headline: headline,
       locale: newspaper.country,
-      website: newspaper.website
+      website: newspaper.website,
+      image: image
     })
     return headlines;
   }))

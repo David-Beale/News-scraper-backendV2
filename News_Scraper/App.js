@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from 'react';
-import { Text, View, StyleSheet, FlatList, Linking } from 'react-native';
+import { Text, View, StyleSheet, FlatList, Linking, ScrollView, Image } from 'react-native';
 import { AppRegistry } from 'react-native';
 
+import HTML from 'react-native-render-html';
 import DateTimePicker from '@react-native-community/datetimepicker';
 
 import { DefaultTheme, Provider as PaperProvider } from 'react-native-paper';
@@ -29,7 +30,7 @@ function handleHelpPress(url) {
 
 
 const fetchData = async (date, month, year, locale) => {
-  let url = `http://10.154.87.160:4000?query={ headline(year: ${year} month:${month} day:${date} locale: "${locale ? locale : "UK"}" ) { day month year newspaper id headline website}}`;
+  let url = `http://10.154.86.199:4000?query={ headline(year: ${year} month:${month} day:${date} locale: "${locale ? locale : "UK"}" ) { day month year newspaper id headline website image}}`;
   return await fetch(url)
     .then(res => {
       if (res.status < 400) {
@@ -46,9 +47,11 @@ const App = () => {
   const [headlines, setHeadlines] = useState([]);
   const [dateFull, setDate] = useState(new Date());
   const [show, setShow] = useState(false);
-  const [locale, setLocale] = useState("UK")
+  const [locale, setLocale] = useState("UK");
+  const [loadhtml, setloadhtml] = useState(false);
+  const [loadingHeadlines, setLoadingHeadlines] = useState(true);
 
-
+  console.log(loadhtml)
   const onChange = (event, selectedDate) => {
     const currentDate = selectedDate || dateFull;
     if (selectedDate) {
@@ -65,6 +68,10 @@ const App = () => {
     setShow(Platform.OS === 'ios');
     setDate(currentDate);
   };
+  const showHtml = () => {
+    const opposite = !loadhtml;
+    setloadhtml(opposite);
+  }
 
   const changeLocale = () => {
     let instanceOfLocale = locale
@@ -92,6 +99,7 @@ const App = () => {
     try {
       fetchData(date, month, year).then(data => {
         setHeadlines(data.data.headline)
+        if (data) setLoadingHeadlines(false);
       })
         .catch((error) => {
           console.log("Api call error");
@@ -110,6 +118,9 @@ const App = () => {
           <Appbar.Content
             title={"News Feeds " + locale}
           />
+          <View style={style.loadingContainer}>
+            <Button mode={"contained"} onPress={() => showHtml()}>+</Button>
+          </View>
           <View >
             <Button style={style.headerButton} mode={"contained"} onPress={() => changeLocale()}>{locale}</Button>
           </View>
@@ -129,7 +140,7 @@ const App = () => {
             />
           )}
         </Appbar.Header>
-        <HeadlineList headlines={headlines} />
+        <HeadlineList headlines={headlines} loadhtml={loadhtml} loadingHeadlines={loadingHeadlines} />
       </View>
     </PaperProvider>
   );
@@ -138,24 +149,31 @@ const App = () => {
 
 
 
-const HeadlineList = ({ headlines }) => {
+const HeadlineList = ({ headlines, loadhtml, loadingHeadlines }) => {
 
-  if (headlines) {
+  if (!loadingHeadlines) {
     return (
       <View >
+        {loadhtml && <View>
+          <View style={{ height: 799 }}>
+            <HTML uri={'https://www.bbc.co.uk'}></HTML>
+          </View>
+        </View>}
         <FlatList
           data={headlines}
           contentContainerStyle={style.container}
           renderItem={(item) => <HeadlineCard headline={item} />}
         >
         </FlatList>
-      </View>
+      </View >
     )
   } else {
     return (
-      <View
-      >
-        <Text>Loading...</Text>
+      <View style={style.loadingContainer}>
+        <Image
+          style={{ width: 400, height: 100, marginTop: 300 }}
+          source={{ uri: 'https://tutorials.cloudboost.io/public/img/loading.gif' }}
+        />
       </View>
     )
   }
@@ -164,12 +182,11 @@ const HeadlineList = ({ headlines }) => {
 
 
 const HeadlineCard = ({ headline }) => {
-
   return (
     <View >
       <Card onPress={() => handleHelpPress(headline.item.website)} style={style.card}>
         <Card.Content>
-          <Card.Cover source={{ uri: 'https://picsum.photos/700' }} />
+          {headline.item.image && <Card.Cover source={{ uri: headline.item.image }} />}
           <Title style={style.title}>{headline.item.newspaper}</Title>
           <Paragraph >{headline.item.headline}</Paragraph>
           <Paragraph style={style.small}>{headline.item.day}/{headline.item.month}/{headline.item.year}</Paragraph>
@@ -199,6 +216,12 @@ const style = StyleSheet.create({
     backgroundColor: "#B3E5FC",
     marginLeft: 7,
     marginRight: 7
+  },
+  loadingContainer: {
+    flex: 1,
+    justifyContent: "center",
+    alignItems: "center",
+    flexDirection: "column"
   }
 });
 

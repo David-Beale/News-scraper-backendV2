@@ -5,6 +5,7 @@ const fs = require('fs')
 const Headlines = require("../server/models/headlines")
 const SiteData = require("../server/models/site-data")
 
+let counter = 0;
 module.exports = {
 	getHeadline: async function (link, test = false) {
 		if (test) return fs.readFileSync('./spec/bbc.html', 'utf8')
@@ -12,17 +13,28 @@ module.exports = {
 			try {
 				const response = await got(link);
 				const data = response.body;
+				// if (link === 'https://www.20minutos.es/') {
+				// 	return data
+				// }
+
+				// fs.writeFileSync(`./${counter}.html`, data)
+				// console.log(counter, link)
+				counter++;
 				return data
 			} catch (error) {
 				console.log('get headline error', error.response.body[4]);
 			}
 		}
 	},
-	parseHeadline: function (data, selector, imageSelector) {
+	parseHeadline: function (data, selector) {
 		const $ = cheerio.load(`${data}`);
 		const headline = $(selector).first().text().trim();
-		const image = $(imageSelector);
 		return headline;
+	},
+	parseImage: function (data, imageSelector) {
+		const $ = cheerio.load(`${data}`);
+		const image = $(imageSelector).attr('src');
+		return image;
 	},
 	getDate: function () {
 		return [Number(moment(Date.now()).format("DD")), Number(moment(Date.now()).format("MM")),

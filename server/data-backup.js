@@ -2,7 +2,9 @@ module.exports = [
   {
     website: 'https://www.20minutos.es/',
     name: '20 Minutos',
-    selector: 'section.board-b a[id="m54-53-55"]',
+    selector: 'section.board-b blq-big article div .media-content header h1 a',
+    imageSelector: 'section.board-b blq-big article div figure img',
+    //img take src
     country: 'ES'
   },
 
@@ -17,10 +19,13 @@ module.exports = [
     website: 'https://www.elmundotoday.com/',
     name: 'El Mundo Today',
     selector: 'h3.entry-title  a',
+    imageSelector: 'div .entry-thumb',
+    // entry-thumb is a span style backround image src= url needed
     country: 'ES'
   },
 
   {
+    //no image
     website: 'https://www.elmundo.es/',
     name: 'El Mundo',
     selector: 'div.ue-l-cover-grid__block div.size6of12 div.ue-l-cover-grid__unit article.ue-c-cover-content div.ue-c-cover-content__body div.ue-c-cover-content__main header.ue-c-cover-content__headline-group a.ue-c-cover-content__link h2.ue-c-cover-content__headline',
@@ -59,6 +64,8 @@ module.exports = [
     website: 'https://www.bbc.com/',
     name: 'BBC',
     selector: 'li.media-list__item--1 a.media__link',
+    imageSelector: 'li.media-list__item--1 .media__image .responsive-image img',
+    // img src
     country: 'UK'
   },
 
@@ -79,7 +86,8 @@ module.exports = [
   {
     website: 'https://morningstaronline.co.uk/',
     name: 'Morning Star Online',
-    selector: 'section.second h1',
+    selector: 'section.second div article header h1',
+    imageSelector: 'section.second div article a img',
     country: 'UK'
   },
 
@@ -87,6 +95,7 @@ module.exports = [
     website: 'https://www.theguardian.com/international',
     name: 'The Guardian',
     selector: '.fc-item__container a.js-headline-text',
+    imageSelector: ".fc-item__container .fc-item__media-wrapper .fc-item__image-container img",
     country: 'UK'
   },
 ]
