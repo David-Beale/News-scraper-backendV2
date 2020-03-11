@@ -89,7 +89,8 @@ module.exports = {
           nextNode = nextNode.children.filter(child => child.type === 'tag' || child.type === 'script' || child.type === 'style')[linkPath[i]]
         }
         const regex = "^(?:https?:\/\/)?(?:[^@\/\n]+@)?(?:www\.)?([^:\/?\n]+)"
-        const concatLink = website.match(regex);
+        const concatLink = website.match(regex)[0];
+        console.log(nextNode.attribs.href)
         if (nextNode.attribs.href[0] === 'h') link = (nextNode.attribs.href)
         else link = (concatLink + nextNode.attribs.href)
         console.log('link', link)

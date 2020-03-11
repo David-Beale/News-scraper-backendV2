@@ -1,36 +1,43 @@
 import React from 'react';
-import './headline.css';
 import Api from '../api-client'
+import { Card, CardMedia, CardContent, Typography, CardActions, Button } from '@material-ui/core'
 
 export default ({ headline, deleteHeadline, deleteScraper }) => {
 
-  const deleteItem = () => {
-    if(deleteHeadline) Api.deleteHeadline(headline.id)
-    if(deleteScraper) Api.deleteScraper(headline.scraperID)
+  const deleteItem = (e) => {
+    e.preventDefault();
+    if (deleteHeadline) Api.deleteHeadline(headline.id)
+    if (deleteScraper) Api.deleteScraper(headline.scraperID)
     setTimeout(() => {
       window.location.reload();
     }, 1000);
   }
 
   return (
-    <div className="outer-post-box">
-      <p className="newspaper-header"> {headline.newspaper}</p>
-      {(deleteScraper || deleteHeadline) &&
-        <button onClick={deleteItem}> DELETE </button>
-      }
-      <a href={headline.link} style={{ display: "block" }}>LINK</a>
-      <div className="newspaper">
-      </div>
-      <div className="inner-post-box">
-        {headline.image &&
-          <img className="image" src={headline.image} alt="image" />
+    < a
+      className="anchor-link"
+      href={headline.link} >
+      <Card className={'card__container'} raised={true}>
+        {(deleteScraper || deleteHeadline) &&
+          <button onClick={deleteItem}> DELETE </button>
         }
-        <p className="title">{headline.headline}</p>
-        {headline.summary &&
-          <p className="summary">{headline.summary}</p>
-        }
-      </div>
-    </div>
+        <CardMedia
+          className="card__image"
+          image={`${headline.image}`}
+        />
+        <CardContent>
+          <Typography gutterBottom variant="h5" component="h2">
+            {headline.newspaper}
+          </Typography>
+          <Typography variant="body2" color="textSecondary" component="p">
+            {headline.headline}
+          </Typography>
+          {/* <Typography variant="body2" color="textSecondary" component="p">
+            {headline.summary}
+          </Typography> */}
+        </CardContent>
+      </Card>
+    </a >
   )
 }
 
