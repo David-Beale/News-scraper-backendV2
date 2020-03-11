@@ -61,7 +61,10 @@ function App() {
   return (
     <div className='app__container'>
       <nav className="appbar bar">
-        <div className="logo__container">
+        <div
+          onClick={e => { e.preventDefault(); setAddFeed(false) }}
+          className="logo__container"
+        >
           <img
             className="logo"
             src={logoPath}
@@ -96,7 +99,7 @@ function App() {
 
       </nav>
       {
-        addFeed ? <AddFeed setAddFeed={setAddFeed} /> : <HeadlineList headlines={headlines} />
+        addFeed ? <AddFeed setAddFeed={setAddFeed} className="add-feed__container" /> : <HeadlineList headlines={headlines} />
       }
       <div className="footer__container bar">
         <p className="footer__text">
