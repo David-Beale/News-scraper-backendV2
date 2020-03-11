@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Text, View, StyleSheet, FlatList, Linking, ScrollView, Image, ToolbarAndroid } from 'react-native';
+import { Text, View, StyleSheet, FlatList, Linking, ScrollView, Image, ToolbarAndroid, Picker } from 'react-native';
 import { AppRegistry } from 'react-native';
 
 import HTML from 'react-native-render-html';
@@ -7,7 +7,10 @@ import DateTimePicker from '@react-native-community/datetimepicker';
 
 import { DefaultTheme, Provider as PaperProvider } from 'react-native-paper';
 import { Card, Title, Paragraph, Appbar, Button, TextInput, Surface, FAB, ActivityIndicator, Avatar } from 'react-native-paper';
+import iso from './iso-alpha2.js'
 
+
+const alphas = iso.map(el => el['alpha-2']);
 
 const theme = {
   ...DefaultTheme,
@@ -211,6 +214,16 @@ const HeadlineList = ({ headlines, loadhtml, loadingHeadlines, setloadhtml }) =>
                   ));
                 }}
               />
+              <Picker
+                selectedValue={formValue[4]}
+                style={{ height: 50, width: 100 }}
+                onValueChange={value => {
+                  setFormValue(
+                    Object.assign({ ...formValue }, { "4": value })
+                  ); console.log(formValue)
+                }}>
+                {alphas.map(el => <Picker.Item label={el} value={el} />).sort((a, b) => a < b)}
+              </Picker>
             </View>}
             {formState === 3 && <View style={{ height: 18, justifyContent: "center", margin: 16 }}><Paragraph style={{ fontStyle: 'italic' }}>Tap image to select</Paragraph></View>}
             {formState !== 3 && <TextInput
