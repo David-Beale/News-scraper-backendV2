@@ -13,6 +13,10 @@
   padding-bottom: 10px;
   flex-wrap: nowrap;
 }
+.image{
+  width:250px;
+  height:250px;
+}
 .newspaper{
   background-color: rgb(255, 133, 51);
   color:white;

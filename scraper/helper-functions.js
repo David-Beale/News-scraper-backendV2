@@ -40,51 +40,69 @@ module.exports = {
     let headline;
     let summary;
     let link;
-    let imageLink;
+    let image;
     if (selector) {
       headline = $(selector).first().text().trim();
     } else if (titlePath.length) {
       let targetNode = $(titleRoot)
       let nextNode = targetNode.children()[titlePath[titlePath.length - 2]]
       for (let i = titlePath.length - 3; i >= 0; i--) {
-        nextNode = nextNode.children.filter(child => child.type === 'tag' || child.type === 'script')[titlePath[i]]
+        nextNode = nextNode.children.filter(child => child.type === 'tag' || child.type === 'script' || child.type === 'style')[titlePath[i]]
       }
       headline = nextNode.children.filter(child => {
         return child.type === 'text' && child.data.trim().length > 5
       })[0].data.trim();
-      console.log('headline',headline)
+      console.log('headline', headline)
     }
     if (summaryPath.length) {
       let targetNode = $(titleRoot)
       let nextNode = targetNode.children()[summaryPath[summaryPath.length - 2]]
       for (let i = summaryPath.length - 3; i >= 0; i--) {
-        nextNode = nextNode.children.filter(child => child.type === 'tag' || child.type === 'script')[summaryPath[i]]
+        nextNode = nextNode.children.filter(child => child.type === 'tag' || child.type === 'script' || child.type === 'style')[summaryPath[i]]
       }
       let children = nextNode.children.filter(child => {
         return child.type === 'text' && child.data.trim().length > 5
       })
-      summary = children[0].data.trim();
-      console.log('summary',summary)
+      if (children[0] && children[0].data) {
+        summary = children[0].data.trim();
+      } else {
+        for (let i = 0; i < nextNode.children.length; i++) {
+          if(nextNode.children[i].children){
+            let child = (nextNode.children[i].children.filter(child => {
+              return child.type === 'text' && child.data.trim().length > 5
+            }))
+            if (child[0] && child[0].data) {
+              summary = child[0].data.trim();
+              i = nextNode.children.length
+            }
+          }
+        }
+      }
+      console.log('summary', summary)
     }
     if (linkPath.length) {
       let targetNode = $(titleRoot)
       let nextNode = targetNode.children()[linkPath[linkPath.length - 2]]
       for (let i = linkPath.length - 3; i >= 0; i--) {
-        nextNode = nextNode.children.filter(child => child.type === 'tag' || child.type === 'script')[linkPath[i]]
+        nextNode = nextNode.children.filter(child => child.type === 'tag' || child.type === 'script' || child.type === 'style')[linkPath[i]]
       }
-      link = website + nextNode.attribs.href;
-      console.log('link',link)
+      const regex = "^(?:https?:\/\/)?(?:[^@\/\n]+@)?(?:www\.)?([^:\/?\n]+)"
+      const concatLink = website.match(regex);
+      if (nextNode.attribs.href[0] === 'h') link = (nextNode.attribs.href)
+      else link = (concatLink + nextNode.attribs.href)
+      console.log('link', link)
     }
     if (imagePath.length) {
       let targetNode = $(titleRoot)
       let nextNode = targetNode.children()[imagePath[imagePath.length - 2]]
       for (let i = imagePath.length - 3; i >= 0; i--) {
-        nextNode = nextNode.children.filter(child => child.type === 'tag' || child.type === 'script')[imagePath[i]]
+        nextNode = nextNode.children.filter(child => child.type === 'tag' || child.type === 'script' || child.type === 'style')[imagePath[i]]
       }
-        imageLink = nextNode.attribs[imageTag]
-      console.log('image',imageLink)
+      image = nextNode.attribs[imageTag]
+      console.log('image', image)
     }
-    return headline;
+    console.log('finished')
+    return { headline, summary, link, image };
   },
   getDate: function () {
     return [Number(moment(Date.now()).format("DD")), Number(moment(Date.now()).format("MM")),

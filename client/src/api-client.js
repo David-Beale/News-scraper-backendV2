@@ -2,17 +2,20 @@ const BASE_URL = 'http://localhost:4000'
 
 export default {
   getHeadlines: () => {
-    return fetchRequest(`graphql?query={ headline(year: 2020 month:3 day:10 locale: "UK" )
+    return fetchRequest(`graphql?query={ headline(year: 2020 month:3 day:11 locale: "UK" )
       {day 
       month 
       year 
       newspaper 
       id
-      headline }
+      headline
+      summary
+      image
+      link }
     }`);
   },
-  getWebsite: () => {
-    return fetchRequest(`graphql?query={  html(name:"20 Minutos"){
+  getWebsite: (website) => {
+    return fetchRequest(`graphql?query={  html(name:"${website}"){
       htmlBody
       website
       name
@@ -20,7 +23,11 @@ export default {
     }
   }`);
   },
-  saveNewFeed: (webLink, webName, webCountry,titlePath, root, summaryPath, linkPath, imagePath, imageTag) => {
+  forceRefresh: () => {
+    return fetchRequest(`graphql?query={  refresh( name:"refresh")
+  }`);
+  },
+  saveNewFeed: (webLink, webName, webCountry, titlePath, root, summaryPath, linkPath, imagePath, imageTag) => {
     titlePath = JSON.stringify(titlePath)
     summaryPath = JSON.stringify(summaryPath)
     linkPath = JSON.stringify(linkPath)
@@ -29,9 +36,9 @@ export default {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(
-        {query: `mutation add { addFeed(website: "${webLink}" name: "${webName}" titlePath: ${titlePath} titleRoot: "${root}" summaryPath: ${summaryPath} linkPath: ${linkPath} imagePath: ${imagePath} country:"${webCountry}" imageTag:"${imageTag}") { website } }`})
-      }
-      console.log(options.body)
+        { query: `mutation add { addFeed(website: "${webLink}" name: "${webName}" titlePath: ${titlePath} titleRoot: "${root}" summaryPath: ${summaryPath} linkPath: ${linkPath} imagePath: ${imagePath} country:"${webCountry}" imageTag:"${imageTag}") { website } }` })
+    }
+    console.log(options.body)
     return fetchRequest(``, options);
   },
 };

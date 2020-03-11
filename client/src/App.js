@@ -12,6 +12,7 @@ function App () {
   const [website, setWebsite] = useState('');
   const [webName, setWebName] = useState('');
   const [webLink, setWebLink] = useState('');
+  const [concatWebLink, setConcatWebLink] = useState('');
   const [webCountry, setWebCountry] = useState('');
   const [show, setShow] = useState(true);
   const [title, setTitle] = useState('');
@@ -27,9 +28,11 @@ function App () {
   const [selectedNode, setSelectedNode] = useState([]);
   const [arrayOfOptions, setArrayOfOptions] = useState([]);
   const [arrayOfNodes, setArrayOfNodes] = useState([]);
+  const [arrayOfTags, setArrayOfTags] = useState([]);
   const [showOptions, setShowOptions] = useState(false);
   const [currentOption, setCurrentOption] = useState(1);
   const [imageTag, setImageTag] = useState('');
+  const [showForm, setShowForm] = useState(false);
 
 
   useEffect(() => {
@@ -37,12 +40,6 @@ function App () {
       .then(result => {
         setHeadlines(result.data.headline)
       });
-    Api.getWebsite().then(result => {
-      setWebsite(result.data.html.htmlBody)
-      setWebName(result.data.html.name)
-      setWebLink(result.data.html.website)
-      setWebCountry(result.data.html.country)
-    })
   }, []);
   ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
   function handleClick (e) {
@@ -54,10 +51,6 @@ function App () {
     for (let i = path.length - 2; i >= 0; i--) {
       targetNode = targetNode.children[path[i]]
     }
-    // console.log(targetNode)
-
-    // console.log(path)
-    // console.log(status)
     setSelectedNode(targetNode)
     if (status === 1) {
       setTitleRoot(root)
@@ -67,7 +60,6 @@ function App () {
       setSummaryPath(path)
       setSummary(targetNode.innerText)
     } else if (status === 3) {
-      // console.log((targetNode.parentNode.getAttribute('src')))
       if (targetNode.getAttribute('src') && targetNode.getAttribute('src')[0] === 'h') {
         setImage(targetNode.src)
         setImageTag('src')
@@ -85,12 +77,13 @@ function App () {
       }
       setImagePath(path)
     } else if (status === 4) {
+      console.log(concatWebLink)
       if (targetNode.href) {
-        if (targetNode.href[7] === 'l') setLink(webLink + targetNode.href.slice(21))
+        if (targetNode.href[7] === 'l') setLink(concatWebLink + targetNode.href.slice(21))
         else setLink(targetNode.href)
       } else if (targetNode.parentNode.href) {
         path.shift();
-        if (targetNode.parentNode.href[7] === 'l') setLink(webLink + targetNode.parentNode.href.slice(21))
+        if (targetNode.parentNode.href[7] === 'l') setLink(concatWebLink + targetNode.parentNode.href.slice(21))
         else setLink(targetNode.parentNode.href)
       }
       setLinkPath(path)
@@ -129,11 +122,11 @@ function App () {
     }
     return [path, root]
   }
-  ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
   function deepSearch () {
     let currentNode = selectedNode.parentNode
     let localArrayOfOptions = []
     let localArrayOfNodes = []
+    let localArrayOfTags = []
 
     function search (currentNode) {
       if (status <= 2 && currentNode.innerText && currentNode.innerText.trim().length > 5) {
@@ -143,30 +136,31 @@ function App () {
       else if (status === 3) {
         if (currentNode.getAttribute('src') && currentNode.getAttribute('src')[0] === 'h') {
           localArrayOfOptions.push(currentNode.getAttribute('src'))
-          setImageTag('src')
+          localArrayOfTags.push('src')
+
           localArrayOfNodes.push(currentNode)
         }
         if (currentNode.getAttribute('data-src') && currentNode.getAttribute('data-src')[0] === 'h') {
           localArrayOfOptions.push(currentNode.getAttribute('data-src'))
-          setImageTag('data-src')
+          localArrayOfTags.push('data-src')
           localArrayOfNodes.push(currentNode)
         }
         if (currentNode.getAttribute('srcset') && currentNode.getAttribute('srcset')[0] === 'h') {
           localArrayOfOptions.push(currentNode.getAttribute('srcset'))
-          setImageTag('srcset')
+          localArrayOfTags.push('srcset')
           localArrayOfNodes.push(currentNode)
         }
         if (currentNode.getAttribute('data-src-md') && currentNode.getAttribute('data-src-md')[0] === 'h') {
           localArrayOfOptions.push(currentNode.getAttribute('data-src-md'))
-          setImageTag('data-src-md')
+          localArrayOfTags.push('data-src-md')
           localArrayOfNodes.push(currentNode)
         }
       }
 
       else if (status === 4 && currentNode.href) {
-        if (currentNode.href[7] === 'l') localArrayOfOptions.push(webLink + currentNode.href.slice(21))
+        if (currentNode.href[7] === 'l') localArrayOfOptions.push(concatWebLink + currentNode.href.slice(21))
         else localArrayOfOptions.push(currentNode.href)
-        
+
         localArrayOfNodes.push(currentNode)
       }
       for (let i = 0; i < currentNode.children.length; i++) {
@@ -174,11 +168,11 @@ function App () {
       }
     }
     search(currentNode)
-    console.log(localArrayOfOptions)
     if (!localArrayOfOptions.length) alert("sorry no options available")
     else {
       setArrayOfOptions(localArrayOfOptions)
       setArrayOfNodes(localArrayOfNodes)
+      setArrayOfTags(localArrayOfTags)
       setShowOptions(true)
     }
   }
@@ -186,14 +180,15 @@ function App () {
   function changeStatus () {
     if (status <= 4) {
       setStatus(status + 1)
-      console.log(status)
     }
   }
   function toggleShow () {
     setShow(!show)
+    setShowForm(true)
   }
   function submit () {
     Api.saveNewFeed(webLink, webName, webCountry, titlePath, titleRoot, summaryPath, linkPath, imagePath, imageTag)
+    toggleShow();
   }
   function previousOption () {
     if (currentOption > 1) setCurrentOption(currentOption - 1)
@@ -204,6 +199,7 @@ function App () {
   function selectOption () {
     let node = arrayOfNodes[currentOption - 1]
     let [path, root] = findPath(node)
+    console.log(node.innerText, path)
     if (status === 1) {
       setTitleRoot(root)
       setTitlePath(path)
@@ -214,6 +210,7 @@ function App () {
     } else if (status === 3) {
       setImagePath(path)
       setImage(arrayOfOptions[currentOption - 1])
+      setImageTag(arrayOfTags[currentOption - 1])
     } else if (status === 4) {
       setLinkPath(path)
       setLink(arrayOfOptions[currentOption - 1])
@@ -221,11 +218,45 @@ function App () {
     setCurrentOption(1)
     setShowOptions(false)
   }
+  const handleAddressChange = (event) => {
+    setWebLink(event.target.value);
+  }
+  const handleNameChange = (event) => {
+    setWebName(event.target.value);
+  }
+  const handleCountryChange = (event) => {
+    setWebCountry(event.target.value);
+  }
+  const handleSubmit = (event) => {
+    event.preventDefault();
+    const regex = "^(?:https?:\/\/)?(?:[^@\/\n]+@)?(?:www\.)?([^:\/?\n]+)"
+    setConcatWebLink(webLink.match(regex)[0]);
+    Api.getWebsite(webLink).then(result => {
+      setWebsite(result.data.html.htmlBody)
+    })
+    setShowForm(false)
+  }
+  const handleCancel = () => {
+    setShow(true)
+    setShowForm(false)
+  }
+  const refresh = () => {
+    Api.forceRefresh().then(result => {
+      console.log(result)
+    });
+    Api.getHeadlines().then(result => {
+      setHeadlines(result.data.headline)
+    });
+    setTimeout(() => {
+      window.location.reload();
+    }, 1000);
+  }
 
   return (
     <div>
       <div className="app-container">
         <div className="main-header">
+          <button onClick={refresh}  >Refresh feed</button>
           <h1 className="header">Headlines</h1>
           <button onClick={toggleShow}  >Add new feed</button>
         </div>
@@ -236,7 +267,22 @@ function App () {
         {!show &&
           <div>
             <div className="addNew">
-              {!showOptions &&
+              {showForm &&
+                <div className="container">
+                  <div className="">Create a new event</div>
+                  <form id="form" onSubmit={handleSubmit} autoComplete="new-password">
+                    <label htmlFor="httpAddress">Web Address</label>
+                    <input autoComplete="off" type="text" id="httpAddress" placeholder="Enter a web address..." onChange={handleAddressChange} value={webLink}></input>
+                    <label htmlFor="name">Site name</label>
+                    <input autoComplete="off" type="text" id="name" placeholder="Enter a site name..." onChange={handleNameChange} value={webName}></input>
+                    <label htmlFor="country">Country</label>
+                    <input autoComplete="off" type="text" id="country" placeholder="Enter a coutry code..." onChange={handleCountryChange} value={webCountry}></input>
+                    <button className="addbutton" type="submit">Submit</button>
+                    <button className="" onClick={handleCancel} >Cancel</button>
+                  </form>
+                </div>
+              }
+              {!showOptions && !showForm &&
                 <div>
                   {(() => {
                     switch (status) {
@@ -262,6 +308,7 @@ function App () {
                   <button onClick={changeStatus} >Next</button>
                   <button onClick={submit} >Submit</button>
                   <button onClick={deepSearch} >Not what you are looking for?</button>
+                  <button onClick={handleCancel} >Cancel</button>
                 </div>
               }
               {showOptions &&
@@ -281,13 +328,13 @@ function App () {
                 </div>
               }
             </div>
-            <div id="externalMaster" className="external" onClick={handleClick} >{renderHTML(website)}</div>
-            {/* <div dangerouslySetInnerHTML={{ __html: website }} /> */}
-            {/* <div className="external" onClick={handleClick} >{website}</div> */}
+            {!showForm &&
+              <div id="externalMaster" className="external" onClick={handleClick} >{renderHTML(website)}</div>
+            }
           </div>
         }
       </div>
-    </div>
+    </div >
   );
 }
 

@@ -3,6 +3,7 @@ const SiteData = require("./models/site-data");
 const got = require('got');
 const fs = require('fs')
 const cheerio = require('cheerio')
+const storeHeadlines = require("../scraper/store-headlines");
 
 const resolvers = {
   Query: {
@@ -13,16 +14,20 @@ const resolvers = {
         return await Headlines.find();
       }
     },
+    refresh: async () => {
+      storeHeadlines.store();
+      return "complete";
+    },
     html: async (_, args) => {
       if (Object.keys(args).length) {
-        const siteData = await SiteData.findOne(args);
-        const { website, name, country } = siteData;
-        html = await got(website);
+        // const siteData = await SiteData.findOne(args);
+        // const { website, name, country } = siteData;
+        html = await got(args.name);
         // html = fs.readFileSync('./bbcnews.html', 'utf8')
         // fs.writeFileSync('./bbcnews.html', html.body)
         // const $ = cheerio.load(html)
         const $ = cheerio.load(html.body)
-        const div =$('<div> class="empty"></div>')
+        // const div =$('<div> class="empty"></div>')
         // $('style').replaceWith(div)
         // $('link').replaceWith(div)
         let images = Object.values($('img'))
@@ -39,9 +44,9 @@ const resolvers = {
         } catch (error) {
           console.log(error)
         }
-        return { htmlBody: $.html(), website, name, country }
+        return { htmlBody: $.html() }
       } else {
-        return await SiteData.find();
+        return 
       }
     }
   },

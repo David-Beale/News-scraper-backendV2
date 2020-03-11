@@ -1,5 +1,6 @@
 const mongoose = require('mongoose');
 const { Schema } = mongoose;
+ObjectId = Schema.ObjectId;
 
 const headlineSchema = new Schema({
   hash: { type: String, allowNull: false },
@@ -12,7 +13,8 @@ const headlineSchema = new Schema({
   summary: { type: String, allowNull: true},
   link: { type: String, allowNull: true},
   image: { type: String, allowNull: true},
-  locale: { type: String, allowNull: false}
+  locale: { type: String, allowNull: false},
+  scraperID: {type: String, allowNull: true},
 });
 
 module.exports = mongoose.model('headlines', headlineSchema);

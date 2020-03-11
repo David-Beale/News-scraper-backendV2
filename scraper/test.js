@@ -1,0 +1,1 @@
+{"query": "mutation add { addFeed(website: \"https://www.dailymail.co.uk/home/index.html\" name: \"Daily Mail\" selectorPath: [0 1 2 1 0 0 3 1 3 1 130] selectorRoot: \"#top.page_banner_overrides.page.page-banner\" country:\"UK\") { website } }"}

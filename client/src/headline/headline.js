@@ -1,19 +1,22 @@
 import React from 'react';
 import './headline.css';
-import * as moment from 'moment';
 
 export default ({ headline }) => {
 
   return (
     <div className="outer-post-box">
+      <a href={headline.link} style={{display: "block"}}>LINK</a>
       <div className="newspaper">
         <p className="newspaper-header"> {headline.newspaper}</p>
-        {/* <p className="date-header"> {moment(event.date).format('MMM')}</p> */}
       </div>
       <div className="inner-post-box">
+        {headline.image &&
+          <img className="image" src={headline.image} alt="image" />
+        }
         <p className="title">{headline.headline}</p>
-        {/* <p className="date">{moment(event.date).format('h:mm a - MMMM Do, YYYY' )}</p> */}
-        {/* <p className="venue">{event.venue}</p> */}
+        {headline.summary &&
+          <p className="summary">{headline.summary}</p>
+        }
       </div>
     </div>
   )
