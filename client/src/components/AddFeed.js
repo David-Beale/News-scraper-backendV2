@@ -305,8 +305,8 @@ export default ({ setAddFeed }) => {
 										<p>{link}</p>
 									</div>;
 								}
-							})()}
-							<button onClick={changeStatus} >Next</button>
+							})}
+							< button onClick={changeStatus} >Next</button>
 							<button onClick={submit} >Submit</button>
 							<button onClick={deepSearch} >Not what you are looking for?</button>
 							<button onClick={handleCancel} >Cancel</button>
@@ -333,7 +333,7 @@ export default ({ setAddFeed }) => {
 					<div id="externalMaster" className="external" onClick={handleClick} >{renderHTML(website)}</div>
 				}
 			</div>
-				}
+
 		</div >
 
 	)
