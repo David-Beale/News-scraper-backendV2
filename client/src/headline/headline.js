@@ -1,13 +1,16 @@
 import React from 'react';
 import './headline.css';
 
-export default ({ headline }) => {
+export default ({ headline, deleteHeadline, deleteScraper, deleteItem }) => {
 
   return (
     <div className="outer-post-box">
-      <a href={headline.link} style={{display: "block"}}>LINK</a>
+      <p className="newspaper-header"> {headline.newspaper}</p>
+      {(deleteScraper || deleteHeadline) &&
+        <button onClick={deleteItem(headline.id, headline.scraperID)}> DELETE </button>
+      }
+      <a href={headline.link} style={{ display: "block" }}>LINK</a>
       <div className="newspaper">
-        <p className="newspaper-header"> {headline.newspaper}</p>
       </div>
       <div className="inner-post-box">
         {headline.image &&

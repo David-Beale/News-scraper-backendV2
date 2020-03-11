@@ -11,7 +11,8 @@ export default {
       headline
       summary
       image
-      link }
+      link 
+      scraperID}
     }`);
   },
   getWebsite: (website) => {
@@ -39,6 +40,24 @@ export default {
         { query: `mutation add { addFeed(website: "${webLink}" name: "${webName}" titlePath: ${titlePath} titleRoot: "${root}" summaryPath: ${summaryPath} linkPath: ${linkPath} imagePath: ${imagePath} country:"${webCountry}" imageTag:"${imageTag}") { website } }` })
     }
     console.log(options.body)
+    return fetchRequest(``, options);
+  },
+  deleteHeadline: (id) => {
+    const options = {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(
+        { query: `mutation deleteHeadline { deleteHeadline(id: "${id}") }` })
+    }
+    return fetchRequest(``, options);
+  },
+  deleteScraper: (id) => {
+    const options = {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(
+        { query: `mutation deleteScraper { deleteScraper(id: "${id}") }` })
+    }
     return fetchRequest(``, options);
   },
 };

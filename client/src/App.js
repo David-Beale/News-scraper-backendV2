@@ -33,6 +33,8 @@ function App () {
   const [currentOption, setCurrentOption] = useState(1);
   const [imageTag, setImageTag] = useState('');
   const [showForm, setShowForm] = useState(false);
+  const [deleteHeadline, setDeleteHeadline] = useState(false);
+  const [deleteScraper, setDeleteScraper] = useState(false);
 
 
   useEffect(() => {
@@ -251,6 +253,19 @@ function App () {
       window.location.reload();
     }, 1000);
   }
+  const toggleDeleteHeadline = () => {
+    setDeleteHeadline(!deleteHeadline)
+  }
+  const toggleDeleteScraper = () => {
+    setDeleteScraper(!deleteScraper)
+  }
+  const deleteItem = (headlineID, scraperID) => {
+    if(deleteHeadline) Api.deleteHeadline(headlineID)
+    if(deleteScraper) Api.deleteScraper(scraperID)
+    setTimeout(() => {
+      window.location.reload();
+    }, 1000);
+  }
 
   return (
     <div>
@@ -259,10 +274,15 @@ function App () {
           <button onClick={refresh}  >Refresh feed</button>
           <h1 className="header">Headlines</h1>
           <button onClick={toggleShow}  >Add new feed</button>
+          <button onClick={toggleDeleteHeadline}  >Delete Headlines </button>
+          <button onClick={toggleDeleteScraper}  >Delete Scraper </button>
         </div>
         {show &&
           <HeadlineList
             headlines={headlines}
+            deleteHeadline={deleteHeadline}
+            deleteScraper={deleteScraper}
+            deleteItem={deleteItem}
           />}
         {!show &&
           <div>

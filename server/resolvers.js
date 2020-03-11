@@ -58,7 +58,23 @@ const resolvers = {
         website, name, titlePath, titleRoot, summaryPath, linkPath, imagePath, country, imageTag
       })
       return newFeed.save();
-    }
+    },
+    deleteHeadline: async (root, args) => {
+      console.log('deleting headline')
+      const {id} = args
+      await Headlines.findByIdAndRemove(id, function (err) {
+        if (err) throw err;
+        console.log('Post deleted');  // eslint-disable-line no-console
+      });
+    },
+    deleteScraper: async (root, args) => {
+      console.log('deleting scraper')
+      const {id} = args
+      await SiteData.findByIdAndRemove(id, function (err) {
+        if (err) throw err;
+        console.log('Post deleted');  // eslint-disable-line no-console
+      });
+    },
   }
 };
 

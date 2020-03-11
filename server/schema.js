@@ -8,6 +8,8 @@ const typeDefs = gql`
   }
   type Mutation {
     addFeed (website: String, name: String, titlePath: [Int], titleRoot: String, summaryPath: [Int], linkPath: [Int], imagePath: [Int], imageTag: String country: String): Feed
+    deleteHeadline (id: String): String
+    deleteScraper (id: String): String
   }
 
   type Feed {
