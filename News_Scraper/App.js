@@ -30,7 +30,7 @@ function handleHelpPress(url) {
 
 
 const fetchData = async (date, month, year, locale) => {
-  let url = `http://10.154.86.199:4000?query={ headline(year: ${year} month:${month} day:${date} locale: "${locale ? locale : "UK"}" ) { day month year newspaper id headline website image}}`;
+  let url = `http://10.154.86.235:4000?query={ headline(year: ${year} month:${month} day:${date} locale: "${locale ? locale : "UK"}" ) { day month year newspaper id headline website image}}`;
   return await fetch(url)
     .then(res => {
       if (res.status < 400) {
@@ -43,7 +43,6 @@ const fetchData = async (date, month, year, locale) => {
 };
 
 const App = () => {
-  console.log('render app')
   const [headlines, setHeadlines] = useState([]);
   const [dateFull, setDate] = useState(new Date());
   const [show, setShow] = useState(false);
@@ -172,9 +171,8 @@ const App = () => {
 
 const HeadlineList = ({ headlines, loadhtml, loadingHeadlines, setloadhtml }) => {
 
-  console.log('render headline list')
 
-  const [formValue, setFormValue] = useState('');
+  const [formValue, setFormValue] = useState({});
   const [formState, setFormState] = useState(0);
 
 
@@ -204,22 +202,37 @@ const HeadlineList = ({ headlines, loadhtml, loadingHeadlines, setloadhtml }) =>
       <View >
         {loadhtml && <View>
           <View >
-            <TextInput
+            {formState === 0 && <View>
+              <TextInput
+                label="name"
+                value={formValue.name}
+                onChangeText={text => {
+                  setFormValue(Object.assign({ ...formValue }, { "5": text }
+                  ));
+                }}
+              />
+            </View>}
+            {formState === 3 && <View style={{ height: 18, justifyContent: "center", margin: 16 }}><Paragraph style={{ fontStyle: 'italic' }}>Tap image to select</Paragraph></View>}
+            {formState !== 3 && <TextInput
               label={formLabel}
               value={formValue}
-              onChangeText={text => { setFormValue(text); console.log(formValue) }}
-            />
+              onChangeText={text => {
+                setFormValue(
+                  Object.assign({ ...formValue }, { [formState]: text })
+                ); console.log(formValue)
+              }}
+            />}
             <View style={{ flexDirection: "row", height: 60 }}>
               <Button
                 mode="outlined"
                 style={{ margin: 12 }}
-                onPress={() => { localFormState++; setFormState(localFormState); setFormValue('') }}
+                onPress={() => { localFormState++; setFormState(localFormState); }}
                 disabled={formState >= 3}
               >Next</Button>
               <Button
                 mode="outlined"
                 style={{ margin: 12 }}
-                onPress={() => { setFormState(0); setloadhtml(false) }}
+                onPress={() => { setFormState(0); setloadhtml(false); console.log(formValue); setFormValue({}); }}
               >Submit</Button>
             </View>
           </View>
@@ -244,7 +257,6 @@ const HeadlineList = ({ headlines, loadhtml, loadingHeadlines, setloadhtml }) =>
 
 const HeadlineCard = ({ headline }) => {
 
-  console.log('render headline card')
 
   return (
     <View >
