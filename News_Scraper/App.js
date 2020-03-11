@@ -2,15 +2,12 @@ import React, { useState, useEffect } from 'react';
 import { Text, View, StyleSheet, FlatList, Linking, ScrollView, Image, ToolbarAndroid, Picker } from 'react-native';
 import { AppRegistry } from 'react-native';
 
-import HTML from 'react-native-render-html';
 import DateTimePicker from '@react-native-community/datetimepicker';
 
 import { DefaultTheme, Provider as PaperProvider } from 'react-native-paper';
-import { Card, Title, Paragraph, Appbar, Button, TextInput, Surface, FAB, ActivityIndicator, Avatar } from 'react-native-paper';
-import iso from './iso-alpha2.js'
+import { Card, Title, Paragraph, Appbar, Button, ActivityIndicator, Avatar } from 'react-native-paper';
 
 
-const alphas = iso.map(el => el['alpha-2']);
 
 const theme = {
   ...DefaultTheme,
@@ -50,7 +47,6 @@ const App = () => {
   const [dateFull, setDate] = useState(new Date());
   const [show, setShow] = useState(false);
   const [locale, setLocale] = useState("UK");
-  const [loadhtml, setloadhtml] = useState(false);
   const [loadingHeadlines, setLoadingHeadlines] = useState(true);
 
 
@@ -71,10 +67,6 @@ const App = () => {
     setShow(Platform.OS === 'ios');
     setDate(currentDate);
   };
-  const showHtml = () => {
-    const opposite = !loadhtml;
-    setloadhtml(opposite);
-  }
 
   const changeLocale = () => {
     let instanceOfLocale = locale
@@ -119,9 +111,6 @@ const App = () => {
       <View>
         <Appbar.Header style={{ justifyContent: "space-between" }}>
           <Avatar.Image size={42} source={require('./assets/newsFeeds.png')} style={{ marginLeft: 12 }} />
-          {/* <Appbar.Content
-            title={"News Feeds " + locale}
-          /> */}
           <View style={{ flexDirection: "row" }} >
             <Button
               style={style.headerButton}
@@ -153,18 +142,9 @@ const App = () => {
         </Appbar.Header>
         <HeadlineList
           headlines={headlines}
-          loadhtml={loadhtml}
           loadingHeadlines={loadingHeadlines}
-          setloadhtml={setloadhtml}
         />
       </View>
-      <FAB
-        style={style.fab}
-        big
-        icon="plus"
-        visible={!loadhtml}
-        onPress={() => showHtml()}
-      />
     </PaperProvider>
   );
 }
@@ -172,84 +152,12 @@ const App = () => {
 
 
 
-const HeadlineList = ({ headlines, loadhtml, loadingHeadlines, setloadhtml }) => {
+const HeadlineList = ({ headlines, loadingHeadlines }) => {
 
-
-  const [formValue, setFormValue] = useState({});
-  const [formState, setFormState] = useState(0);
-
-
-
-  let formLabel = '';
-  switch (formState) {
-    case 0:
-      formLabel = "input website address"
-      break;
-    case 1:
-      formLabel = "select title"
-      break;
-    case 2:
-      formLabel = "select summary"
-      break;
-    case 3:
-      formLabel = "select image"
-      break;
-    default:
-      break;
-  }
-
-  let localFormState = formState;
 
   if (!loadingHeadlines) {
     return (
-      <View >
-        {loadhtml && <View>
-          <View >
-            {formState === 0 && <View>
-              <TextInput
-                label="name"
-                value={formValue.name}
-                onChangeText={text => {
-                  setFormValue(Object.assign({ ...formValue }, { "5": text }
-                  ));
-                }}
-              />
-              <Picker
-                selectedValue={formValue[4]}
-                style={{ height: 50, width: 100 }}
-                onValueChange={value => {
-                  setFormValue(
-                    Object.assign({ ...formValue }, { "4": value })
-                  ); console.log(formValue)
-                }}>
-                {alphas.map(el => <Picker.Item label={el} value={el} />).sort((a, b) => a < b)}
-              </Picker>
-            </View>}
-            {formState === 3 && <View style={{ height: 18, justifyContent: "center", margin: 16 }}><Paragraph style={{ fontStyle: 'italic' }}>Tap image to select</Paragraph></View>}
-            {formState !== 3 && <TextInput
-              label={formLabel}
-              value={formValue}
-              onChangeText={text => {
-                setFormValue(
-                  Object.assign({ ...formValue }, { [formState]: text })
-                ); console.log(formValue)
-              }}
-            />}
-            <View style={{ flexDirection: "row", height: 60 }}>
-              <Button
-                mode="outlined"
-                style={{ margin: 12 }}
-                onPress={() => { localFormState++; setFormState(localFormState); }}
-                disabled={formState >= 3}
-              >Next</Button>
-              <Button
-                mode="outlined"
-                style={{ margin: 12 }}
-                onPress={() => { setFormState(0); setloadhtml(false); console.log(formValue); setFormValue({}); }}
-              >Submit</Button>
-            </View>
-          </View>
-        </View>}
+      <View>
         <FlatList
           data={headlines}
           contentContainerStyle={style.container}
