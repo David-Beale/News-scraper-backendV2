@@ -1,12 +1,12 @@
 import React, { useState, useEffect } from 'react';
-import './App.css';
-import HeadlineList from './headline-list/headline-list';
+// import './App.css';
+import HeadlineList from './headline-list';
 import Api from './api-client';
 import renderHTML from 'react-render-html';
 import apiClient from './api-client';
 
 
-function App () {
+function App() {
 
   const [headlines, setHeadlines] = useState([]);
   const [website, setWebsite] = useState('');
@@ -44,7 +44,7 @@ function App () {
       });
   }, []);
   ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-  function handleClick (e) {
+  function handleClick(e) {
     e.preventDefault();
     let currentNode = e.target
     let [path, root] = findPath(currentNode)
@@ -91,7 +91,7 @@ function App () {
       setLinkPath(path)
     }
   }
-  function findPath (currentNode) {
+  function findPath(currentNode) {
     let path = [];
     let root = '';
     let parentNode = currentNode.parentNode
@@ -124,13 +124,13 @@ function App () {
     }
     return [path, root]
   }
-  function deepSearch () {
+  function deepSearch() {
     let currentNode = selectedNode.parentNode
     let localArrayOfOptions = []
     let localArrayOfNodes = []
     let localArrayOfTags = []
 
-    function search (currentNode) {
+    function search(currentNode) {
       if (status <= 2 && currentNode.innerText && currentNode.innerText.trim().length > 5) {
         localArrayOfOptions.push(currentNode.innerText.trim())
         localArrayOfNodes.push(currentNode)
@@ -179,26 +179,26 @@ function App () {
     }
   }
 
-  function changeStatus () {
+  function changeStatus() {
     if (status <= 4) {
       setStatus(status + 1)
     }
   }
-  function toggleShow () {
+  function toggleShow() {
     setShow(!show)
     setShowForm(true)
   }
-  function submit () {
+  function submit() {
     Api.saveNewFeed(webLink, webName, webCountry, titlePath, titleRoot, summaryPath, linkPath, imagePath, imageTag)
     toggleShow();
   }
-  function previousOption () {
+  function previousOption() {
     if (currentOption > 1) setCurrentOption(currentOption - 1)
   }
-  function nextOption () {
+  function nextOption() {
     if (currentOption < arrayOfOptions.length) setCurrentOption(currentOption + 1)
   }
-  function selectOption () {
+  function selectOption() {
     let node = arrayOfNodes[currentOption - 1]
     let [path, root] = findPath(node)
     console.log(node.innerText, path)

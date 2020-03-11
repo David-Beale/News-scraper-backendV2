@@ -269,14 +269,14 @@ export default ({ setAddFeed }) => {
 					<button onClick={toggleDeleteScraper}  >Delete Scraper </button>
 				</div>
 				<div>
-					<div className="container">
+					<div className="add-feed__container">
 						<div className="">
 							<h1>
 								Create a new event
 							</h1>
 						</div>
 						{showForm &&
-							<form id="form" onSubmit={handleSubmit} autoComplete="new-password">
+							<form id="form" className="first-form" onSubmit={handleSubmit} autoComplete="new-password">
 								<label htmlFor="httpAddress">Web Address</label>
 								<input
 									autoComplete="off"
@@ -311,41 +311,43 @@ export default ({ setAddFeed }) => {
 					</div>
 
 					{!showOptions && !showForm &&
-						< div >
+						< div className="second-form">
 							{(() => {
 								switch (status) {
 									case 1: return (
 										<div>
-											<p>Select a title</p>
+											<h4>Select a title</h4>
 											<p>{title}</p>
 										</div>
 									);
 									case 2: return (
 										<div>
-											<p>Select a Summary</p>
+											<h4>Select a Summary</h4>
 											<p>{summary}</p>
 										</div>
 									);
 									case 3: return (
 										<div>
-											<p>Select a Image</p>
+											<h4>Select a Image</h4>
 											<p>{image}</p>
 											<img src={image} style={{ width: 100, height: 100 }}></img>
 										</div>
 									);
 									case 4: return (
 										<div>
-											<p>Select a Link</p>
+											<h4>Select a Link</h4>
 											<p>{link}</p>
 										</div>
 									);
 								}
 							})()}
-							<button onClick={changeStatus} >Next</button>
-							<button onClick={submit} >Submit</button>
-							<button onClick={deepSearch} >Not what you are looking for?</button>
-							<button onClick={handleCancel} >Cancel</button>
-						</div>
+							<div className="action-buttons__container">
+								<button onClick={changeStatus} >Next</button>
+								<button onClick={submit} >Submit</button>
+								<button onClick={deepSearch} >Not what you are looking for?</button>
+								<button onClick={handleCancel} >Cancel</button>
+							</div>
+						</ div>
 					}
 					{showOptions &&
 						<div>

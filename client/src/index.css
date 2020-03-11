@@ -131,6 +131,20 @@ a{
 
 /*------Add Feed -----*/
 
+
+.add-feed__container,.action-buttons__container{
+  align-items: center;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+.action-buttons__container{
+  flex-direction: row;
+  height: 150px;
+}
+.action-buttons__container button{
+  margin: 16px;
+}
 .external{
   border: dotted thick black;
   height: 80vh;
@@ -138,4 +152,15 @@ a{
   overflow: scroll;
   padding: 24px;
   z-index: -99;
+}
+
+.first-form, .second-form{
+  align-items: center;
+  display:flex;
+  flex-direction: column;
+  justify-content: center;
+  border: dotted thin black;
+}
+.first-form input,.second-form input{
+  margin: 16px;
 }
