@@ -28,7 +28,7 @@ export default ({ setAddFeed }) => {
 	const [showOptions, setShowOptions] = useState(false);
 	const [currentOption, setCurrentOption] = useState(1);
 	const [imageTag, setImageTag] = useState('');
-	const [showForm, setShowForm] = useState(false);
+	const [showForm, setShowForm] = useState(true);
 	const [deleteHeadline, setDeleteHeadline] = useState(false);
 	const [deleteScraper, setDeleteScraper] = useState(false);
 
@@ -265,81 +265,76 @@ export default ({ setAddFeed }) => {
 			<div className="app-container">
 				<div className="main-header">
 					<button onClick={refresh}  >Refresh feed</button>
-					<h1 className="header">Headlines</h1>
-					<button onClick={toggleShow}  >Add new feed</button>
 					<button onClick={toggleDeleteHeadline}  >Delete Headlines </button>
 					<button onClick={toggleDeleteScraper}  >Delete Scraper </button>
 				</div>
 				<div>
-					<div className="addNew">
-						{showForm &&
-							<div className="container">
-								<div className="">Create a new event</div>
-								<form id="form" onSubmit={handleSubmit} autoComplete="new-password">
-									<label htmlFor="httpAddress">Web Address</label>
-									<input autoComplete="off" type="text" id="httpAddress" placeholder="Enter a web address..." onChange={handleAddressChange} value={webLink}></input>
-									<label htmlFor="name">Site name</label>
-									<input autoComplete="off" type="text" id="name" placeholder="Enter a site name..." onChange={handleNameChange} value={webName}></input>
-									<label htmlFor="country">Country</label>
-									<input autoComplete="off" type="text" id="country" placeholder="Enter a coutry code..." onChange={handleCountryChange} value={webCountry}></input>
-									<button className="addbutton" type="submit">Submit</button>
-									<button className="" onClick={handleCancel} >Cancel</button>
-								</form>
-							</div>
-						}
-						{!showOptions && !showForm &&
-							<div>
-								{(() => {
-									switch (status) {
-										case 1: return <div>
-											<p>Select a title</p>
-											<p>{title}</p>
-										</div>;
-										case 2: return <div>
-											<p>Select a Summary</p>
-											<p>{summary}</p>
-										</div>;
-										case 3: return <div>
-											<p>Select a Image</p>
-											<p>{image}</p>
-											<img src={image} style={{ width: 100, height: 100 }}></img>
-										</div>;
-										case 4: return <div>
-											<p>Select a Link</p>
-											<p>{link}</p>
-										</div>;
-									}
-								})()}
-								<button onClick={changeStatus} >Next</button>
-								<button onClick={submit} >Submit</button>
-								<button onClick={deepSearch} >Not what you are looking for?</button>
-								<button onClick={handleCancel} >Cancel</button>
-							</div>
-						}
-						{showOptions &&
-							<div>
-								<div>
-									Option {currentOption} out of {arrayOfOptions.length}
-									<div>
-										{arrayOfOptions[currentOption - 1]}
-										{status === 3 &&
-											<img src={arrayOfOptions[currentOption - 1]} style={{ height: 100 }}></img>
-										}
-									</div>
-								</div>
-								<button onClick={previousOption} >Previous</button>
-								<button onClick={selectOption} >Select</button>
-								<button onClick={nextOption} >Next</button>
-							</div>
-						}
+					<div className="container">
+						<div className="">Create a new event</div>
+						<form id="form" onSubmit={handleSubmit} autoComplete="new-password">
+							<label htmlFor="httpAddress">Web Address</label>
+							<input autoComplete="off" type="text" id="httpAddress" placeholder="Enter a web address..." onChange={handleAddressChange} value={webLink}></input>
+							<label htmlFor="name">Site name</label>
+							<input autoComplete="off" type="text" id="name" placeholder="Enter a site name..." onChange={handleNameChange} value={webName}></input>
+							<label htmlFor="country">Country</label>
+							<input autoComplete="off" type="text" id="country" placeholder="Enter a coutry code..." onChange={handleCountryChange} value={webCountry}></input>
+							<button className="addbutton" type="submit">Submit</button>
+							<button className="" onClick={handleCancel} >Cancel</button>
+						</form>
 					</div>
-					{!showForm &&
-						<div id="externalMaster" className="external" onClick={handleClick} >{renderHTML(website)}</div>
+
+					{!showOptions && !showForm &&
+						< div >
+							{(() => {
+								switch (status) {
+									case 1: return <div>
+										<p>Select a title</p>
+										<p>{title}</p>
+									</div>;
+									case 2: return <div>
+										<p>Select a Summary</p>
+										<p>{summary}</p>
+									</div>;
+									case 3: return <div>
+										<p>Select a Image</p>
+										<p>{image}</p>
+										<img src={image} style={{ width: 100, height: 100 }}></img>
+									</div>;
+									case 4: return <div>
+										<p>Select a Link</p>
+										<p>{link}</p>
+									</div>;
+								}
+							})()}
+							<button onClick={changeStatus} >Next</button>
+							<button onClick={submit} >Submit</button>
+							<button onClick={deepSearch} >Not what you are looking for?</button>
+							<button onClick={handleCancel} >Cancel</button>
+						</div>
+					}
+					{showOptions &&
+						<div>
+							<div>
+								Option {currentOption} out of {arrayOfOptions.length}
+								<div>
+									{arrayOfOptions[currentOption - 1]}
+									{status === 3 &&
+										<img src={arrayOfOptions[currentOption - 1]} style={{ height: 100 }}></img>
+									}
+								</div>
+							</div>
+							<button onClick={previousOption} >Previous</button>
+							<button onClick={selectOption} >Select</button>
+							<button onClick={nextOption} >Next</button>
+						</div>
 					}
 				</div>
+				{!showForm &&
+					<div id="externalMaster" className="external" onClick={handleClick} >{renderHTML(website)}</div>
 				}
 			</div>
+				}
+		</div >
 
-		</div>
 	)
 };
