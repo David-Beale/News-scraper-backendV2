@@ -259,13 +259,7 @@ function App () {
   const toggleDeleteScraper = () => {
     setDeleteScraper(!deleteScraper)
   }
-  const deleteItem = (headlineID, scraperID) => {
-    if(deleteHeadline) Api.deleteHeadline(headlineID)
-    if(deleteScraper) Api.deleteScraper(scraperID)
-    setTimeout(() => {
-      window.location.reload();
-    }, 1000);
-  }
+
 
   return (
     <div>
@@ -282,7 +276,6 @@ function App () {
             headlines={headlines}
             deleteHeadline={deleteHeadline}
             deleteScraper={deleteScraper}
-            deleteItem={deleteItem}
           />}
         {!show &&
           <div>

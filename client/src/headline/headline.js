@@ -1,13 +1,22 @@
 import React from 'react';
 import './headline.css';
+import Api from '../api-client'
 
-export default ({ headline, deleteHeadline, deleteScraper, deleteItem }) => {
+export default ({ headline, deleteHeadline, deleteScraper }) => {
+
+  const deleteItem = () => {
+    if(deleteHeadline) Api.deleteHeadline(headline.id)
+    if(deleteScraper) Api.deleteScraper(headline.scraperID)
+    setTimeout(() => {
+      window.location.reload();
+    }, 1000);
+  }
 
   return (
     <div className="outer-post-box">
       <p className="newspaper-header"> {headline.newspaper}</p>
       {(deleteScraper || deleteHeadline) &&
-        <button onClick={deleteItem(headline.id, headline.scraperID)}> DELETE </button>
+        <button onClick={deleteItem}> DELETE </button>
       }
       <a href={headline.link} style={{ display: "block" }}>LINK</a>
       <div className="newspaper">

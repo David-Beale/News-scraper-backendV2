@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import './headline-list.css';
 import Headline from '../headline/headline'
 
-export default ({ headlines, deleteHeadline, deleteScraper, deleteItem }) => {
+export default ({ headlines, deleteHeadline, deleteScraper }) => {
   return (
     <div className="list-container">
       {headlines.length === 0 &&
@@ -19,7 +19,6 @@ export default ({ headlines, deleteHeadline, deleteScraper, deleteItem }) => {
                 headline={headline}
                 deleteHeadline={deleteHeadline}
                 deleteScraper={deleteScraper}
-                deleteItem={deleteItem}
               />
           })}
         </div>}
