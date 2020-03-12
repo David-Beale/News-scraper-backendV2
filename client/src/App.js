@@ -5,14 +5,13 @@ import Api from './api-client';
 import renderHTML from 'react-render-html';
 import DatePicker from 'react-date-picker'
 import { Button } from '@material-ui/core';
-import logoPath from './assets/icon.png';
-import { Card, CardMedia, CardContent, Typography, CardActions } from '@material-ui/core'
 
+import logoPath from './assets/icon.png';
 let date = new Date().getDate();
 let month = new Date().getMonth() + 1;
 let year = new Date().getFullYear();
 
-function App () {
+function App() {
 
   const [dateFull, setDate] = useState(new Date());
   const [headlines, setHeadlines] = useState([]);
@@ -42,6 +41,7 @@ function App () {
   const [showForm, setShowForm] = useState(false);
   const [deleteHeadline, setDeleteHeadline] = useState(false);
   const [deleteScraper, setDeleteScraper] = useState(false);
+  const [isActive, setIsActive] = useState(false);
 
   const onChange = (selectedDate) => {
     const currentDate = selectedDate || dateFull;
@@ -66,7 +66,7 @@ function App () {
       });
   }, []);
   ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-  function handleClick (e) {
+  function handleClick(e) {
     e.preventDefault();
     console.log('click')
     let currentNode = e.target
@@ -114,7 +114,7 @@ function App () {
       setLinkPath(path)
     }
   }
-  function findPath (currentNode) {
+  function findPath(currentNode) {
     let path = [];
     let root = '';
     let parentNode = currentNode.parentNode
@@ -147,13 +147,13 @@ function App () {
     }
     return [path, root]
   }
-  function deepSearch () {
+  function deepSearch() {
     let currentNode = selectedNode.parentNode
     let localArrayOfOptions = []
     let localArrayOfNodes = []
     let localArrayOfTags = []
 
-    function search (currentNode) {
+    function search(currentNode) {
       if (status <= 2 && currentNode.innerText && currentNode.innerText.trim().length > 5) {
         localArrayOfOptions.push(currentNode.innerText.trim())
         localArrayOfNodes.push(currentNode)
@@ -202,26 +202,26 @@ function App () {
     }
   }
 
-  function changeStatus () {
+  function changeStatus() {
     if (status <= 4) {
       setStatus(status + 1)
     }
   }
-  function toggleShow () {
+  function toggleShow() {
     setShow(!show)
     setShowForm(true)
   }
-  function submit () {
+  function submit() {
     Api.saveNewFeed(webLink, webName, webCountry, titlePath, titleRoot, summaryPath, linkPath, imagePath, imageTag)
     toggleShow();
   }
-  function previousOption () {
+  function previousOption() {
     if (currentOption > 1) setCurrentOption(currentOption - 1)
   }
-  function nextOption () {
+  function nextOption() {
     if (currentOption < arrayOfOptions.length) setCurrentOption(currentOption + 1)
   }
-  function selectOption () {
+  function selectOption() {
     let node = arrayOfNodes[currentOption - 1]
     let [path, root] = findPath(node)
     console.log(node.innerText, path)
@@ -270,7 +270,7 @@ function App () {
       console.log(result)
     });
     Api.getHeadlines().then(result => {
-      if(result.data){
+      if (result.data) {
         setHeadlines(result.data.headline)
       }
     });
@@ -279,7 +279,11 @@ function App () {
     }, 1000);
   }
   const toggleDeleteHeadline = () => {
-    setDeleteHeadline(!deleteHeadline)
+    const isActiveLocal = isActive
+    setDeleteHeadline(!deleteHeadline);
+    console.log(isActiveLocal)
+    setIsActive(!isActiveLocal);
+    console.log(isActiveLocal)
   }
   const toggleDeleteScraper = () => {
     setDeleteScraper(!deleteScraper)
@@ -301,12 +305,15 @@ function App () {
           </div>
           <div className="action__container">
             <Button
+              size="small"
               variant="contained"
               className="form-toggle"
               onClick={toggleShow}
             >
               Add Feed
           </Button>
+            <Button size="small" variant="contained" onClick={refresh}  >Refresh feed</Button>
+            <Button size="small" variant="contained" onClick={toggleDeleteHeadline} isActive={isActive} className={isActive && "danger"} >Delete Headlines </Button>
             <Button>
               <DatePicker
                 clearIcon={null}
@@ -316,9 +323,7 @@ function App () {
                 maxDate={new Date()}
                 onChange={(date) => onChange(date)} />
             </Button>
-            <Button onClick={refresh}  >Refresh feed</Button>
-            <Button onClick={toggleDeleteHeadline}  >Delete Headlines </Button>
-            <Button onClick={toggleDeleteScraper}  >Delete Scraper </Button>
+            <Button size="small" variant="contained" onClick={toggleDeleteScraper}  >Delete Scraper </Button>
           </div>
 
         </nav>
@@ -375,10 +380,10 @@ function App () {
                     }
                   })()}
                   <div className="action-buttons__container">
-                  <button onClick={changeStatus} >Next</button>
-                  <button onClick={submit} >Submit</button>
-                  <button onClick={deepSearch} >Not what you are looking for?</button>
-                  <button onClick={handleCancel} >Cancel</button>
+                    <button onClick={changeStatus} >Next</button>
+                    <button onClick={submit} >Submit</button>
+                    <button onClick={deepSearch} >Not what you are looking for?</button>
+                    <button onClick={handleCancel} >Cancel</button>
                   </div>
                 </div>
               }

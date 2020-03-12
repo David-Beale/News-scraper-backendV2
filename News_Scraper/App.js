@@ -564,17 +564,12 @@ const HeadlineList = ({ headlines, loadhtml, loadingHeadlines, setloadhtml }) =>
         />
       </View >
     )
-<<<<<<< HEAD
   } else {
-=======
-  } else if (!loadhtml) {
->>>>>>> 60dbf185e85535c3b9883aadb92b87b9319a698f
     return (
       <View style={style.loadingContainer}>
         <ActivityIndicator style={{ marginTop: 200 }} size="large" animating={true} color={"red"} />
       </View>
     )
-<<<<<<< HEAD
   }
 };
 
@@ -582,17 +577,6 @@ const HeadlineList = ({ headlines, loadhtml, loadingHeadlines, setloadhtml }) =>
 
 const HeadlineCard = ({ headline }) => {
 
-=======
-  } else return (
-    <View></View>
-  )
-};
-
-
-const HeadlineCard = ({ headline }) => {
-
-  console.log('render headline card')
->>>>>>> 60dbf185e85535c3b9883aadb92b87b9319a698f
 
   return (
     <View >

@@ -8,20 +8,18 @@ export default ({ headlines, deleteHeadline, deleteScraper }) => {
       {headlines.length === 0 &&
         <div className="no-content-container">
           <CircularProgress />
-          <br/>
-          <span className="no-content">No Headlines Yet!</span>
         </div>}
 
       {headlines.length > 0 &&
         <div id="" className="">
 
           {headlines.map((headline) => {
-              return <Headline
-                key={headline.id}
-                headline={headline}
-                deleteHeadline={deleteHeadline}
-                deleteScraper={deleteScraper}
-              />
+            return <Headline
+              key={headline.id}
+              headline={headline}
+              deleteHeadline={deleteHeadline}
+              deleteScraper={deleteScraper}
+            />
           })}
         </div>}
     </div>
