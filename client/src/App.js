@@ -5,12 +5,7 @@ import Api from './api-client';
 import renderHTML from 'react-render-html';
 import DatePicker from 'react-date-picker'
 import { Button } from '@material-ui/core';
-<<<<<<< HEAD
-import logoPath from './assets/icon.png';
-import { Card, CardMedia, CardContent, Typography, CardActions } from '@material-ui/core'
 import Draggable from 'react-draggable';
-=======
->>>>>>> 53b13da11d17b718f883b1c1dc53a37ef545a4e7
 
 import logoPath from './assets/icon.png';
 let date = new Date().getDate();
