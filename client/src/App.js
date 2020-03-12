@@ -222,7 +222,7 @@ function App() {
     setShow(!show)
     setShowForm(true)
   }
-  function submit () {
+  function submit() {
     Api.saveNewFeed(webLink, webName, titlePath, titleRoot, summaryPath, linkPath, imagePath, imageTag)
     toggleShow();
     setTimeout(() => {
@@ -414,13 +414,13 @@ function App() {
                               <p className='formMessage'>Select a link</p>
                               <p className='formContent'>{link}</p>
                             </div>;
-                                                    case 5: return <div>
-                                                    <h4>click SUBMIT to add your feed.</h4>
-                                                  </div>
+                            case 5: return <div>
+                              <h4>click SUBMIT to add your feed.</h4>
+                            </div>
                           }
                         })()}
                         <div className="action-buttons__container">
-                        {status < 6 && status > 1 && <Button size="small" variant="contained" onClick={changeStatusBack} >Back</Button>}
+                          {status < 6 && status > 1 && <Button size="small" variant="contained" onClick={changeStatusBack} >Back</Button>}
                           {status < 5 && <Button size="small" variant="contained" onClick={changeStatus} >Next</Button>}
                           <Button size="small" variant="contained" onClick={submit} >Submit</Button>
                           <Button size="small" variant="contained" onClick={deepSearch} >Not what you are looking for?</Button>
@@ -462,7 +462,7 @@ function App() {
       </div>
       <div className="footer__container bar">
         <p className="footer__text">
-          <i>developed by:</i> Joseph T.C. & David Beale
+          <i>developed by:</i> David Beale & Joseph T.C.
         </p>
       </div>
     </div >
