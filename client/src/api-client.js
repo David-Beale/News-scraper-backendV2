@@ -1,7 +1,7 @@
 const BASE_URL = 'http://localhost:4000'
 
 export default {
-  getHeadlines: (day, month, year, locale) => {
+  getHeadlines: (day, month, year) => {
     return fetchRequest(`graphql?query={ headline(year: ${year} month:${month} day:${day} )
       {day 
       month 
@@ -18,9 +18,6 @@ export default {
   getWebsite: (website) => {
     return fetchRequest(`graphql?query={  html(name:"${website}"){
       htmlBody
-      website
-      name
-      country
     }
   }`);
   },
@@ -28,7 +25,7 @@ export default {
     return fetchRequest(`graphql?query={  refresh( name:"refresh")
   }`);
   },
-  saveNewFeed: (webLink, webName, webCountry, titlePath, root, summaryPath, linkPath, imagePath, imageTag) => {
+  saveNewFeed: (webLink, webName, titlePath, root, summaryPath, linkPath, imagePath, imageTag) => {
     titlePath = JSON.stringify(titlePath)
     summaryPath = JSON.stringify(summaryPath)
     linkPath = JSON.stringify(linkPath)
@@ -37,7 +34,7 @@ export default {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(
-        { query: `mutation add { addFeed(website: "${webLink}" name: "${webName}" titlePath: ${titlePath} titleRoot: "${root}" summaryPath: ${summaryPath} linkPath: ${linkPath} imagePath: ${imagePath} country:"${webCountry}" imageTag:"${imageTag}") { website } }` })
+        { query: `mutation add { addFeed(website: "${webLink}" name: "${webName}" titlePath: ${titlePath} titleRoot: "${root}" summaryPath: ${summaryPath} linkPath: ${linkPath} imagePath: ${imagePath} imageTag:"${imageTag}") { website } }` })
     }
     console.log(options.body)
     return fetchRequest(``, options);

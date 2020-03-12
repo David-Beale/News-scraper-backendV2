@@ -17,8 +17,8 @@ describe("Scraper testing", function() {
   describe("Fetch", function () {
     it("returns an array of formatted db objects", async function () {
       const array = await fetchHeadLines(mock.date,mock.data,true)
-      const {hash, day, month, year, time, newspaper, headline, locale} = array[0]
-      expect([hash, day, month, year, time, newspaper, headline, locale]).toEqual(mock.fetchResult)
+      const {hash, day, month, year, time, newspaper, headline} = array[0]
+      expect([hash, day, month, year, time, newspaper, headline]).toEqual(mock.fetchResult)
     });
   });
   describe("Store", function () {

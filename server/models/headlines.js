@@ -13,7 +13,6 @@ const headlineSchema = new Schema({
   summary: { type: String, allowNull: true },
   link: { type: String, allowNull: true },
   image: { type: String, allowNull: true },
-  locale: { type: String, allowNull: false },
   scraperID: { type: String, allowNull: true },
 });
 

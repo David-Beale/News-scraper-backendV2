@@ -73,14 +73,6 @@ a{
   margin: 0 12px;
 }
 
-/* .locale-button{
-  border: solid 1px black;
-  border-radius: 12px;
-  background: none;
-  padding: 12px 16px;
-} */
-
-
 .date-picker{
   background: #e0e0e0;
   /* border: solid thin grey; */
@@ -178,11 +170,14 @@ a{
   overflow: visible;
 }
 .form2Head{
+  cursor: move;
   width:100%;
   height:1.5rem;
-  background-color: rgb(189, 187, 187);
+  background-color: #90caf9;
   text-align: center;
   padding-top:5px;
+  font-size: 0.8rem;
+  font-weight: 700;
 }
 .formMessage{
   position: absolute;
@@ -194,28 +189,48 @@ a{
 }
 .first-form{
   align-items: center;
+  margin-top: 10px;
+  width:40vw;
   display:flex;
   flex-direction: column;
   justify-content: center;
-  border: dotted thin black;
+  border: solid 1px rgb(184, 182, 182);
+  background-color: rgb(231, 227, 227);
+  border-radius: 5px;
+  box-shadow: 6px 9px 22px 0px rgba(112,112,112,0.67);
+  padding: 5px;
+  margin-bottom: 30px;
+}
+input{
+  padding-left: 5px;
+  width:75%;
+  border-radius: 2px;
+}
+.addbutton{
+  margin:5px;
 }
 .second-form{
   align-items: center;
   display:flex;
   flex-direction: column;
   justify-content: space-between;
-  border: dotted thin black;
+  border: solid thin rgb(165, 164, 164);
+  border-radius: 5px;
   position: fixed;
   padding:3px;
-  width: 300px;
+  width: 350px;
   height:300px;
   top: 3rem;
   margin-left:20px;
   /* left:50vw;
   margin-left:-250px; */
   z-index: 9999;
-  background-color: rgba(243, 243, 243, 0.747);
+  background-color: rgba(243, 243, 243, 0.897);
 }
 .first-form input,.second-form input{
   margin: 16px;
+}
+.formContent{
+  margin-top:2rem;
+  overflow: scroll;
 }

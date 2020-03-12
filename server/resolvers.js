@@ -20,8 +20,6 @@ const resolvers = {
     },
     html: async (_, args) => {
       if (Object.keys(args).length) {
-        // const siteData = await SiteData.findOne(args);
-        // const { website, name, country } = siteData;
         html = await got(args.name);
         // html = fs.readFileSync('./bbcnews.html', 'utf8')
         // fs.writeFileSync('./bbcnews.html', html.body)
@@ -53,9 +51,9 @@ const resolvers = {
   Mutation: {
     addFeed: (root, args) => {
       console.log('adding feed')
-      const { website, name, titlePath, titleRoot, summaryPath, linkPath, imagePath, country, imageTag } = args
+      const { website, name, titlePath, titleRoot, summaryPath, linkPath, imagePath, imageTag } = args
       const newFeed = new SiteData({
-        website, name, titlePath, titleRoot, summaryPath, linkPath, imagePath, country, imageTag
+        website, name, titlePath, titleRoot, summaryPath, linkPath, imagePath, imageTag
       })
       return newFeed.save();
     },

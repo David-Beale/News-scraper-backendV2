@@ -21,7 +21,6 @@ async function fetchHeadlines(date, data, test) {
         summary,
         link,
         image,
-        locale: newspaper.country,
         scraperID: newspaper._id.toString(),
       })
       return headlines;

@@ -42,73 +42,84 @@ module.exports = {
     let summary;
     let link;
     let image;
-    try {
+    // try {
       if (selector) {
         headline = $(selector).first().text().trim();
       } else if (titlePath.length) {
-        let targetNode = $(titleRoot)
-        let nextNode = targetNode.children()[titlePath[titlePath.length - 2]]
-        for (let i = titlePath.length - 3; i >= 0; i--) {
-          nextNode = nextNode.children.filter(child => child.type === 'tag' || child.type === 'script' || child.type === 'style')[titlePath[i]]
+        try {
+          let targetNode = $(titleRoot)
+          let nextNode = targetNode.children()[titlePath[titlePath.length - 2]]
+          for (let i = titlePath.length - 3; i >= 0; i--) {
+            nextNode = nextNode.children.filter(child => child.type === 'tag' || child.type === 'script' || child.type === 'style')[titlePath[i]]
+          }
+          headline = nextNode.children.filter(child => {
+            return child.type === 'text' && child.data.trim().length > 5
+          })[0].data.trim();
+        } catch (error) {
+          headline='Failed to scrape'
         }
-        headline = nextNode.children.filter(child => {
-          return child.type === 'text' && child.data.trim().length > 5
-        })[0].data.trim();
-        // console.log('headline', headline)
       }
       if (summaryPath.length) {
-        let targetNode = $(titleRoot)
-        let nextNode = targetNode.children()[summaryPath[summaryPath.length - 2]]
-        for (let i = summaryPath.length - 3; i >= 0; i--) {
-          nextNode = nextNode.children.filter(child => child.type === 'tag' || child.type === 'script' || child.type === 'style')[summaryPath[i]]
-        }
-        let children = nextNode.children.filter(child => {
-          return child.type === 'text' && child.data.trim().length > 5
-        })
-        if (children[0] && children[0].data) {
-          summary = children[0].data.trim();
-        } else {
-          for (let i = 0; i < nextNode.children.length; i++) {
-            if (nextNode.children[i].children) {
-              let child = (nextNode.children[i].children.filter(child => {
-                return child.type === 'text' && child.data.trim().length > 5
-              }))
-              if (child[0] && child[0].data) {
-                summary = child[0].data.trim();
-                i = nextNode.children.length
+        try {
+          let targetNode = $(titleRoot)
+          let nextNode = targetNode.children()[summaryPath[summaryPath.length - 2]]
+          for (let i = summaryPath.length - 3; i >= 0; i--) {
+            nextNode = nextNode.children.filter(child => child.type === 'tag' || child.type === 'script' || child.type === 'style')[summaryPath[i]]
+          }
+          let children = nextNode.children.filter(child => {
+            return child.type === 'text' && child.data.trim().length > 5
+          })
+          if (children[0] && children[0].data) {
+            summary = children[0].data.trim();
+          } else {
+            for (let i = 0; i < nextNode.children.length; i++) {
+              if (nextNode.children[i].children) {
+                let child = (nextNode.children[i].children.filter(child => {
+                  return child.type === 'text' && child.data.trim().length > 5
+                }))
+                if (child[0] && child[0].data) {
+                  summary = child[0].data.trim();
+                  i = nextNode.children.length
+                }
               }
             }
           }
+          // console.log('summary', summary)
+        } catch (error) {
+          summary='Failed to scrape'
         }
-        // console.log('summary', summary)
       }
       if (linkPath.length) {
-        let targetNode = $(titleRoot)
-        let nextNode = targetNode.children()[linkPath[linkPath.length - 2]]
-        for (let i = linkPath.length - 3; i >= 0; i--) {
-          nextNode = nextNode.children.filter(child => child.type === 'tag' || child.type === 'script' || child.type === 'style')[linkPath[i]]
+        try {
+          let targetNode = $(titleRoot)
+          let nextNode = targetNode.children()[linkPath[linkPath.length - 2]]
+          for (let i = linkPath.length - 3; i >= 0; i--) {
+            nextNode = nextNode.children.filter(child => child.type === 'tag' || child.type === 'script' || child.type === 'style')[linkPath[i]]
+          }
+          const regex = "^(?:https?:\/\/)?(?:[^@\/\n]+@)?(?:www\.)?([^:\/?\n]+)"
+          const concatLink = website.match(regex)[0];
+          if (nextNode.attribs.href[0] === 'h') link = (nextNode.attribs.href)
+          else link = (concatLink + nextNode.attribs.href)
+          // console.log('link', link)
+        } catch (error) {
+          link = 'Failed to scrape'
         }
-        const regex = "^(?:https?:\/\/)?(?:[^@\/\n]+@)?(?:www\.)?([^:\/?\n]+)"
-        const concatLink = website.match(regex)[0];
-        console.log(nextNode.attribs.href)
-        if (nextNode.attribs.href[0] === 'h') link = (nextNode.attribs.href)
-        else link = (concatLink + nextNode.attribs.href)
-        // console.log('link', link)
       }
       if (imagePath.length) {
-        let targetNode = $(titleRoot)
-        let nextNode = targetNode.children()[imagePath[imagePath.length - 2]]
-        for (let i = imagePath.length - 3; i >= 0; i--) {
-          nextNode = nextNode.children.filter(child => child.type === 'tag' || child.type === 'script' || child.type === 'style')[imagePath[i]]
+        try {
+          let targetNode = $(titleRoot)
+          let nextNode = targetNode.children()[imagePath[imagePath.length - 2]]
+          for (let i = imagePath.length - 3; i >= 0; i--) {
+            nextNode = nextNode.children.filter(child => child.type === 'tag' || child.type === 'script' || child.type === 'style')[imagePath[i]]
+          }
+          image = nextNode.attribs[imageTag]
+          // console.log('image', image)
+        } catch (error) {
+          image = 'Failed to scrape'
         }
-        image = nextNode.attribs[imageTag]
-        // console.log('image', image)
       }
       // console.log('finished')
       return { headline, summary, link, image };
-    } catch (error) {
-      return null
-    }
   },
   getDate: function () {
     return [Number(moment(Date.now()).format("DD")), Number(moment(Date.now()).format("MM")),

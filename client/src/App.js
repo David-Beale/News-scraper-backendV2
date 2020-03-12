@@ -20,7 +20,6 @@ function App () {
   const [webName, setWebName] = useState('');
   const [webLink, setWebLink] = useState('');
   const [concatWebLink, setConcatWebLink] = useState('');
-  const [webCountry, setWebCountry] = useState('');
   const [show, setShow] = useState(true);
   const [title, setTitle] = useState('');
   const [summary, setSummary] = useState('');
@@ -72,8 +71,12 @@ function App () {
     console.log('click')
     let currentNode = e.target
     let [path, root] = findPath(currentNode)
-
-    let targetNode = document.querySelector(root);
+    let targetNode
+    try {
+      targetNode = document.querySelector(root);
+    } catch (error) {
+      console.log(error)
+    }
     for (let i = path.length - 2; i >= 0; i--) {
       targetNode = targetNode.children[path[i]]
     }
@@ -213,8 +216,11 @@ function App () {
     setShowForm(true)
   }
   function submit () {
-    Api.saveNewFeed(webLink, webName, webCountry, titlePath, titleRoot, summaryPath, linkPath, imagePath, imageTag)
+    Api.saveNewFeed(webLink, webName, titlePath, titleRoot, summaryPath, linkPath, imagePath, imageTag)
     toggleShow();
+    setTimeout(() => {
+      window.location.reload();
+    }, 2000);
   }
   function previousOption () {
     if (currentOption > 1) setCurrentOption(currentOption - 1)
@@ -250,14 +256,21 @@ function App () {
   const handleNameChange = (event) => {
     setWebName(event.target.value);
   }
-  const handleCountryChange = (event) => {
-    setWebCountry(event.target.value);
-  }
   const handleSubmit = (event) => {
     event.preventDefault();
     const regex = "^(?:https?:\/\/)?(?:[^@\/\n]+@)?(?:www\.)?([^:\/?\n]+)"
-    setConcatWebLink(webLink.match(regex)[0]);
-    Api.getWebsite(webLink).then(result => {
+    let localLink = webLink;
+    if (webLink[0] === 'w' && webLink[1] === 'w' && webLink[2] === 'w') {
+      setWebLink('https://' + webLink);
+      localLink = 'https://' + webLink;
+    }
+    else if (webLink[0] !== 'w' && webLink[1] !== 'w' && webLink[2] !== 'w'
+      && webLink[0] !== 'h' && webLink[1] !== 't' && webLink[2] !== 't') {
+      setWebLink('https://www.' + webLink);
+      localLink = 'https://www.' + webLink;
+    }
+    setConcatWebLink(localLink.match(regex)[0]);
+    Api.getWebsite(localLink).then(result => {
       setWebsite(result.data.html.htmlBody)
     })
     setShowForm(false)
@@ -270,7 +283,7 @@ function App () {
     Api.forceRefresh().then(result => {
       console.log(result)
     });
-    Api.getHeadlines().then(result => {
+    Api.getHeadlines(date, month, year).then(result => {
       if (result.data) {
         setHeadlines(result.data.headline)
       }
@@ -343,76 +356,80 @@ function App () {
                 <div className="add-feed__container">
                   <div className="">Create a custom scraper</div>
                   <form id="form" className="first-form" onSubmit={handleSubmit} autoComplete="new-password">
-                    <label htmlFor="httpAddress">Web Address</label>
+                    <label htmlFor="httpAddress">Web Address:</label>
                     <input autoComplete="off" type="text" id="httpAddress"
                       placeholder="Enter a web address..." onChange={handleAddressChange}
                       value={webLink}></input>
-                    <label htmlFor="name">Site name</label>
+                    <label htmlFor="name">Site name:</label>
                     <input autoComplete="off" type="text" id="name"
                       placeholder="Enter a site name..." onChange={handleNameChange}
                       value={webName}></input>
-                    <label htmlFor="country">Country</label>
-                    <input autoComplete="off" type="text" id="country"
-                      placeholder="Enter a coutry code..." onChange={handleCountryChange}
-                      value={webCountry}></input>
-                    <button className="addbutton" type="submit">Submit</button>
-                    <button className="" onClick={handleCancel} >Cancel</button>
+                    <div>
+                      <button className="addbutton" type="submit">Submit</button>
+                      <button className="" onClick={handleCancel} >Cancel</button>
+                    </div>
                   </form>
                 </div>
               }
-              {!showOptions && !showForm &&
+              {!showForm &&
                 <Draggable>
                   <div className="second-form" id="form2">
                     <div className="form2Head" id="form2Head">Click and drag</div>
-                    {(() => {
-                      switch (status) {
-                        case 1: return <div>
-                          <p className='formMessage'>Select a title</p>
-                          <p>{title}</p>
-                        </div>;
-                        case 2: return <div>
-                          <p className='formMessage'>Select a Summary</p>
-                          <p>{summary}</p>
-                        </div>;
-                        case 3: return <div>
-                          <p className='formMessage'>Select a Image</p>
-                          <img src={image} style={{ width: 100, height: 100 }}></img>
-                        </div>;
-                        case 4: return <div>
-                          <p className='formMessage'>Select a Link</p>
-                          <p>{link}</p>
-                        </div>;
-                      }
-                    })()}
-                    <div className="action-buttons__container">
-                      {status < 5 && <Button size="small" variant="contained" onClick={changeStatus} >Next</Button>}
-                      <Button size="small" variant="contained" onClick={submit} >Submit</Button>
-                      <Button size="small" variant="contained" onClick={deepSearch} >Not what you are looking for?</Button>
-                      <Button size="small" variant="contained" onClick={handleCancel} >Cancel</Button>
-                    </div>
+                    {!showOptions &&
+                      <div>
+                        {(() => {
+                          switch (status) {
+                            case 1: return <div>
+                              <p className='formMessage'>Select a title</p>
+                              <p className='formContent'>{title}</p>
+                            </div>;
+                            case 2: return <div>
+                              <p className='formMessage'>Select a summary (optional)</p>
+                              <p className='formContent'>{summary}</p>
+                            </div>;
+                            case 3: return <div>
+                              <p className='formMessage'>Select an image</p>
+                              <img src={image} style={{ width: 100, height: 100 }}></img>
+                            </div>;
+                            case 4: return <div>
+                              <p className='formMessage'>Select a link</p>
+                              <p className='formContent'>{link}</p>
+                            </div>;
+                          }
+                        })()}
+                        <div className="action-buttons__container">
+                          {status < 5 && <Button size="small" variant="contained" onClick={changeStatus} >Next</Button>}
+                          <Button size="small" variant="contained" onClick={submit} >Submit</Button>
+                          <Button size="small" variant="contained" onClick={deepSearch} >Not what you are looking for?</Button>
+                          <Button size="small" variant="contained" onClick={handleCancel} >Cancel</Button>
+                        </div>
+                      </div>}
+                    {showOptions &&
+                      <div>
+                        <div>
+                          <div className='formMessage'>
+                            Option {currentOption} out of {arrayOfOptions.length}
+                          </div>
+                          <div>
+                            {status !== 3 &&
+                              <div>
+                                {arrayOfOptions[currentOption - 1]}
+                              </div>
+                            }
+                            {status === 3 &&
+                              <img src={arrayOfOptions[currentOption - 1]} style={{ height: 100 }}></img>
+                            }
+                          </div>
+                        </div>
+                        <Button size="small" variant="contained" onClick={previousOption} >Previous</Button>
+                        <Button size="small" variant="contained" onClick={selectOption} >Select</Button>
+                        <Button size="small" variant="contained" onClick={nextOption} >Next</Button>
+                      </div>
+                    }
                   </div>
                 </Draggable>
               }
-              {showOptions &&
-                <div>
-                  <div>
-                    Option {currentOption} out of {arrayOfOptions.length}
-                    <div>
-                      {status !== 3 &&
-                        <div>
-                          {arrayOfOptions[currentOption - 1]}
-                        </div>
-                      }
-                      {status === 3 &&
-                        <img src={arrayOfOptions[currentOption - 1]} style={{ height: 100 }}></img>
-                      }
-                    </div>
-                  </div>
-                  <Button size="small" variant="contained" onClick={previousOption} >Previous</Button>
-                  <Button size="small" variant="contained" onClick={selectOption} >Select</Button>
-                  <Button size="small" variant="contained" onClick={nextOption} >Next</Button>
-                </div>
-              }
+
             </div>
             {!showForm &&
               <div id="externalMaster" className="external" onClick={handleClick} >{renderHTML(website)}</div>

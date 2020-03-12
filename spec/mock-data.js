@@ -4,10 +4,9 @@ module.exports = {
         website: 'https://www.bbc.com/',
         name: 'TEST',
         selector: 'li.media-list__item--1 a.media__link',
-        country: 'TEST'
     }],
     fetchResult: ['4287bcff', 0, 0, 0000, '2:10 PM', 'TEST',
-        'Coronavirus: Italy closes schools and universities', 'TEST'],
+        'Coronavirus: Italy closes schools and universities'],
     "query": {
         "data": {
             "headline": [
