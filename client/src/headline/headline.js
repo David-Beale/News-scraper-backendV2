@@ -1,8 +1,9 @@
 import React from 'react';
 import Api from '../api-client'
-import { Card, CardMedia, CardContent, Typography, CardActions, Button } from '@material-ui/core'
+import { Card, CardMedia, CardContent, Typography, CardActions, Button } from '@material-ui/core';
+import DeleteForever from '@material-ui/icons/DeleteForever';
 
-export default ({ headline, deleteHeadline, deleteScraper }) => {
+export default ({ headline, deleteHeadline, deleteScraper, isActiveStatus, isActiveStatusScraper }) => {
 
   const deleteItem = (e) => {
     e.preventDefault();
@@ -12,14 +13,25 @@ export default ({ headline, deleteHeadline, deleteScraper }) => {
       window.location.reload();
     }, 1000);
   }
+  const activeStatus = () => {
+    if (isActiveStatusScraper && !isActiveStatus) {
+      return 'danger2';
+    } else if (isActiveStatus && !isActiveStatusScraper) {
+      return 'danger';
+    } else if (isActiveStatus && isActiveStatusScraper) {
+      return 'doubleDanger'
+    }
+  };
 
   return (
     < a
       className="anchor-link"
-      href={headline.link} >
+      href={headline.link}
+      target="_blank"
+    >
       <Card className='card__container' raised={true}>
         {(deleteScraper || deleteHeadline) &&
-          <Button size="small" variant="outlined" onClick={deleteItem} class="danger card__delete-button"> DELETE </Button>
+          <div onClick={deleteItem} className={`${activeStatus()} card__delete-button`}><DeleteForever /></div>
         }
         <CardMedia
           className="card__image"

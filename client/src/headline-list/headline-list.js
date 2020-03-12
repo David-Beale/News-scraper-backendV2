@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import Headline from '../headline/headline'
 import { CircularProgress } from '@material-ui/core';
 
-export default ({ headlines, deleteHeadline, deleteScraper }) => {
+export default ({ headlines, deleteHeadline, deleteScraper, isActiveStatus, isActiveStatusScraper }) => {
   return (
     <div className="list__container">
       {
@@ -18,6 +18,8 @@ export default ({ headlines, deleteHeadline, deleteScraper }) => {
               headline={headline}
               deleteHeadline={deleteHeadline}
               deleteScraper={deleteScraper}
+              isActiveStatus={isActiveStatus}
+              isActiveStatusScraper={isActiveStatusScraper}
             />
           }))
       }

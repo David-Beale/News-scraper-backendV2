@@ -12,7 +12,7 @@ let date = new Date().getDate();
 let month = new Date().getMonth() + 1;
 let year = new Date().getFullYear();
 
-function App () {
+function App() {
 
   const [dateFull, setDate] = useState(new Date());
   const [headlines, setHeadlines] = useState([]);
@@ -41,7 +41,9 @@ function App () {
   const [showForm, setShowForm] = useState(false);
   const [deleteHeadline, setDeleteHeadline] = useState(false);
   const [deleteScraper, setDeleteScraper] = useState(false);
-  const [isActive, setIsActive] = useState(false);
+  const [isActiveStatus, setIsActiveStatus] = useState(false);
+  const [isActiveStatusScraper, setIsActiveStatusScraper] = useState(false);
+
 
   const onChange = (selectedDate) => {
     const currentDate = selectedDate || dateFull;
@@ -66,7 +68,7 @@ function App () {
       });
   }, []);
   ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-  function handleClick (e) {
+  function handleClick(e) {
     e.preventDefault();
     console.log('click')
     let currentNode = e.target
@@ -118,7 +120,7 @@ function App () {
       setLinkPath(path)
     }
   }
-  function findPath (currentNode) {
+  function findPath(currentNode) {
     let path = [];
     let root = '';
     let parentNode = currentNode.parentNode
@@ -151,13 +153,13 @@ function App () {
     }
     return [path, root]
   }
-  function deepSearch () {
+  function deepSearch() {
     let currentNode = selectedNode.parentNode
     let localArrayOfOptions = []
     let localArrayOfNodes = []
     let localArrayOfTags = []
 
-    function search (currentNode) {
+    function search(currentNode) {
       if (status <= 2 && currentNode.innerText && currentNode.innerText.trim().length > 5) {
         localArrayOfOptions.push(currentNode.innerText.trim())
         localArrayOfNodes.push(currentNode)
@@ -206,12 +208,17 @@ function App () {
     }
   }
 
-  function changeStatus () {
+  function changeStatus() {
     if (status <= 4) {
       setStatus(status + 1)
     }
   }
-  function toggleShow () {
+  function changeStatusBack() {
+    if (status >= 1) {
+      setStatus(status - 1)
+    }
+  }
+  function toggleShow() {
     setShow(!show)
     setShowForm(true)
   }
@@ -222,13 +229,13 @@ function App () {
       window.location.reload();
     }, 2000);
   }
-  function previousOption () {
+  function previousOption() {
     if (currentOption > 1) setCurrentOption(currentOption - 1)
   }
-  function nextOption () {
+  function nextOption() {
     if (currentOption < arrayOfOptions.length) setCurrentOption(currentOption + 1)
   }
-  function selectOption () {
+  function selectOption() {
     let node = arrayOfNodes[currentOption - 1]
     let [path, root] = findPath(node)
     console.log(node.innerText, path)
@@ -293,14 +300,14 @@ function App () {
     }, 1000);
   }
   const toggleDeleteHeadline = () => {
-    const isActiveLocal = isActive
+    const isActiveLocal = isActiveStatus
     setDeleteHeadline(!deleteHeadline);
-    console.log(isActiveLocal)
-    setIsActive(!isActiveLocal);
-    console.log(isActiveLocal)
+    setIsActiveStatus(!isActiveLocal);
   }
   const toggleDeleteScraper = () => {
-    setDeleteScraper(!deleteScraper)
+    const isActiveLocal = isActiveStatusScraper;
+    setDeleteScraper(!deleteScraper);
+    setIsActiveStatusScraper(!isActiveLocal);
   }
 
 
@@ -308,7 +315,7 @@ function App () {
 
   return (
     <div>
-      <div className="app-container">
+      <div className="app__container">
         <nav className="appbar bar">
           <div
             // onClick={e => { e.preventDefault(); setAddFeed(false) }}
@@ -319,27 +326,33 @@ function App () {
               src={logoPath}
             />
           </div>
+          <div className="date-picker__container">
+
+            <DatePicker
+              clearIcon={null}
+              calendarIcon={null}
+              className="date-picker"
+              value={dateFull}
+              maxDate={new Date()}
+              onChange={(date) => onChange(date)} />
+          </div>
           <div className="action__container">
-            <Button
-              size="small"
-              variant="contained"
-              className="form-toggle"
-              onClick={toggleShow}
-            >
-              Add Feed
+            <div>
+
+              <Button
+                size="small"
+                variant="contained"
+                className="form-toggle appbar__button"
+                onClick={toggleShow}
+              >
+                Add Feed
           </Button>
-            <Button size="small" variant="contained" onClick={refresh}  >Refresh feed</Button>
-            <Button size="small" variant="contained" onClick={toggleDeleteHeadline} isActive={isActive} className={isActive && "danger"} >Delete Headlines </Button>
-            <Button>
-              <DatePicker
-                clearIcon={null}
-                calendarIcon={null}
-                className="date-picker"
-                value={dateFull}
-                maxDate={new Date()}
-                onChange={(date) => onChange(date)} />
-            </Button>
-            <Button size="small" variant="contained" onClick={toggleDeleteScraper}  >Delete Scraper </Button>
+              <Button size="small" variant="contained" onClick={refresh} className="appbar__button" >Refresh feed</Button>
+            </div>
+            <div>
+              <Button size="small" variant="contained" onClick={toggleDeleteHeadline} isActiveStatus={isActiveStatus} className={`${isActiveStatus && "danger"} appbar__button`}>Delete Headlines </Button>
+              <Button size="small" variant="contained" onClick={toggleDeleteScraper} isActiveStatusScraper={isActiveStatusScraper} className={`${isActiveStatusScraper && "danger2"} app-bar__button`} >Delete Scraper </Button>
+            </div>
           </div>
 
         </nav>
@@ -348,13 +361,19 @@ function App () {
             headlines={headlines}
             deleteHeadline={deleteHeadline}
             deleteScraper={deleteScraper}
+            isActiveStatus={isActiveStatus}
+            isActiveStatusScraper={isActiveStatusScraper}
           />}
         {!show &&
           <div className="">
-            <div className="">
+            <div className="first-form__container">
               {showForm &&
                 <div className="add-feed__container">
-                  <div className="">Create a custom scraper</div>
+                  <div className="">
+                    <h4>
+                      Add url to name and country to add new Feed
+                  </h4>
+                  </div>
                   <form id="form" className="first-form" onSubmit={handleSubmit} autoComplete="new-password">
                     <label htmlFor="httpAddress">Web Address:</label>
                     <input autoComplete="off" type="text" id="httpAddress"
@@ -395,9 +414,13 @@ function App () {
                               <p className='formMessage'>Select a link</p>
                               <p className='formContent'>{link}</p>
                             </div>;
+                                                    case 5: return <div>
+                                                    <h4>click SUBMIT to add your feed.</h4>
+                                                  </div>
                           }
                         })()}
                         <div className="action-buttons__container">
+                        {status < 6 && status > 1 && <Button size="small" variant="contained" onClick={changeStatusBack} >Back</Button>}
                           {status < 5 && <Button size="small" variant="contained" onClick={changeStatus} >Next</Button>}
                           <Button size="small" variant="contained" onClick={submit} >Submit</Button>
                           <Button size="small" variant="contained" onClick={deepSearch} >Not what you are looking for?</Button>
