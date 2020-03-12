@@ -5,6 +5,7 @@ import Api from './api-client';
 import renderHTML from 'react-render-html';
 import DatePicker from 'react-date-picker'
 import { Button } from '@material-ui/core';
+import Draggable from 'react-draggable';
 
 import logoPath from './assets/icon.png';
 let date = new Date().getDate();
@@ -295,6 +296,8 @@ function App() {
   }
 
 
+
+
   return (
     <div>
       <div className="app-container">
@@ -363,45 +366,51 @@ function App() {
                 </div>
               }
               {!showOptions && !showForm &&
-                <div className="second-form">
-                  {(() => {
-                    switch (status) {
-                      case 1: return <div>
-                        <p>Select a title</p>
-                        <p>{title}</p>
-                      </div>;
-                      case 2: return <div>
-                        <p>Select a Summary</p>
-                        <p>{summary}</p>
-                      </div>;
-                      case 3: return <div>
-                        <p>Select a Image</p>
-                        <img src={image} style={{ width: 100, height: 100 }}></img>
-                      </div>;
-                      case 4: return <div>
-                        <p>Select a Link</p>
-                        <p>{link}</p>
-                      </div>;
-                      case 5: return <div>
-                        <h4>click SUBMIT to add your feed.</h4>
-                      </div>
-                    }
-                  })()}
-                  <div className="action-buttons__container">
-                    {status < 6 && status > 1 && <Button size="small" variant="contained" onClick={changeStatusBack} >Back</Button>}
-                    {status < 5 && <Button size="small" variant="contained" onClick={changeStatus} >Next</Button>}
-                    <Button size="small" variant="contained" onClick={submit} >Submit</Button>
-                    <Button size="small" variant="contained" onClick={deepSearch} >Not what you are looking for?</Button>
-                    <Button size="small" variant="contained" onClick={handleCancel} >Cancel</Button>
+                <Draggable className="draggable__container">
+                  <div className="second-form">
+                    {(() => {
+                      switch (status) {
+                        case 1: return <div>
+                          <p>Select a title</p>
+                          <p>{title}</p>
+                        </div>;
+                        case 2: return <div>
+                          <p>Select a Summary</p>
+                          <p>{summary}</p>
+                        </div>;
+                        case 3: return <div>
+                          <p>Select a Image</p>
+                          <img src={image} style={{ width: 100, height: 100 }}></img>
+                        </div>;
+                        case 4: return <div>
+                          <p>Select a Link</p>
+                          <p>{link}</p>
+                        </div>;
+                        case 5: return <div>
+                          <h4>click SUBMIT to add your feed.</h4>
+                        </div>
+                      }
+                    })()}
+                    <div className="action-buttons__container">
+                      {status < 6 && status > 1 && <Button size="small" variant="contained" onClick={changeStatusBack} >Back</Button>}
+                      {status < 5 && <Button size="small" variant="contained" onClick={changeStatus} >Next</Button>}
+                      <Button size="small" variant="contained" onClick={submit} >Submit</Button>
+                      <Button size="small" variant="contained" onClick={deepSearch} >Not what you are looking for?</Button>
+                      <Button size="small" variant="contained" onClick={handleCancel} >Cancel</Button>
+                    </div>
                   </div>
-                </div>
+                </Draggable>
               }
               {showOptions &&
                 <div>
                   <div>
                     Option {currentOption} out of {arrayOfOptions.length}
                     <div>
-                      {arrayOfOptions[currentOption - 1]}
+                      {status !== 3 &&
+                        <div>
+                          {arrayOfOptions[currentOption - 1]}
+                        </div>
+                      }
                       {status === 3 &&
                         <img src={arrayOfOptions[currentOption - 1]} style={{ height: 100 }}></img>
                       }
