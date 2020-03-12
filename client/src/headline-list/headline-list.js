@@ -1,19 +1,21 @@
 import React, { useState } from 'react';
-import './headline-list.css';
 import Headline from '../headline/headline'
+import { CircularProgress } from '@material-ui/core';
 
 export default ({ headlines, deleteHeadline, deleteScraper }) => {
   return (
-    <div className="list-container">
+    <div className="list__container">
       {headlines.length === 0 &&
         <div className="no-content-container">
+          <CircularProgress />
+          <br/>
           <span className="no-content">No Headlines Yet!</span>
         </div>}
 
       {headlines.length > 0 &&
-        <div id="list" className="list-container">
+        <div id="" className="">
 
-          {headlines.map((headline,index) => {
+          {headlines.map((headline) => {
               return <Headline
                 key={headline.id}
                 headline={headline}

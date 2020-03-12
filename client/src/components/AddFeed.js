@@ -264,53 +264,90 @@ export default ({ setAddFeed }) => {
 		<div>
 			<div className="app-container">
 				<div className="main-header">
-					<button onClick={refresh}  >Refresh feed</button>
+					<button onClick={refresh} >Refresh feed</button>
 					<button onClick={toggleDeleteHeadline}  >Delete Headlines </button>
 					<button onClick={toggleDeleteScraper}  >Delete Scraper </button>
 				</div>
 				<div>
-					<div className="container">
-						<div className="">Create a new event</div>
-						<form id="form" onSubmit={handleSubmit} autoComplete="new-password">
-							<label htmlFor="httpAddress">Web Address</label>
-							<input autoComplete="off" type="text" id="httpAddress" placeholder="Enter a web address..." onChange={handleAddressChange} value={webLink}></input>
-							<label htmlFor="name">Site name</label>
-							<input autoComplete="off" type="text" id="name" placeholder="Enter a site name..." onChange={handleNameChange} value={webName}></input>
-							<label htmlFor="country">Country</label>
-							<input autoComplete="off" type="text" id="country" placeholder="Enter a coutry code..." onChange={handleCountryChange} value={webCountry}></input>
-							<button className="addbutton" type="submit">Submit</button>
-							<button className="" onClick={handleCancel} >Cancel</button>
-						</form>
+					<div className="add-feed__container">
+						<div className="">
+							<h1>
+								Create a new event
+							</h1>
+						</div>
+						{showForm &&
+							<form id="form" className="first-form" onSubmit={handleSubmit} autoComplete="new-password">
+								<label htmlFor="httpAddress">Web Address</label>
+								<input
+									autoComplete="off"
+									type="text"
+									id="httpAddress"
+									placeholder="Enter a web address..."
+									onChange={handleAddressChange}
+									value={webLink}>
+								</input>
+								<label htmlFor="name">Site name</label>
+								<input
+									autoComplete="off"
+									type="text"
+									id="name"
+									placeholder="Enter a site name..."
+									onChange={handleNameChange}
+									value={webName}>
+								</input>
+								<label htmlFor="country">Country</label>
+								<input
+									autoComplete="off"
+									type="text"
+									id="country"
+									placeholder="Enter a coutry code..."
+									onChange={handleCountryChange}
+									value={webCountry}>
+								</input>
+								<button className="addbutton" type="submit">Submit</button>
+								<button className="" onClick={handleCancel} >Cancel</button>
+							</form>
+						}
 					</div>
 
 					{!showOptions && !showForm &&
-						< div >
+						< div className="second-form">
 							{(() => {
 								switch (status) {
-									case 1: return <div>
-										<p>Select a title</p>
-										<p>{title}</p>
-									</div>;
-									case 2: return <div>
-										<p>Select a Summary</p>
-										<p>{summary}</p>
-									</div>;
-									case 3: return <div>
-										<p>Select a Image</p>
-										<p>{image}</p>
-										<img src={image} style={{ width: 100, height: 100 }}></img>
-									</div>;
-									case 4: return <div>
-										<p>Select a Link</p>
-										<p>{link}</p>
-									</div>;
+									case 1: return (
+										<div>
+											<h4>Select a title</h4>
+											<p>{title}</p>
+										</div>
+									);
+									case 2: return (
+										<div>
+											<h4>Select a Summary</h4>
+											<p>{summary}</p>
+										</div>
+									);
+									case 3: return (
+										<div>
+											<h4>Select a Image</h4>
+											<p>{image}</p>
+											<img src={image} style={{ width: 100, height: 100 }}></img>
+										</div>
+									);
+									case 4: return (
+										<div>
+											<h4>Select a Link</h4>
+											<p>{link}</p>
+										</div>
+									);
 								}
 							})()}
-							<button onClick={changeStatus} >Next</button>
-							<button onClick={submit} >Submit</button>
-							<button onClick={deepSearch} >Not what you are looking for?</button>
-							<button onClick={handleCancel} >Cancel</button>
-						</div>
+							<div className="action-buttons__container">
+								<button onClick={changeStatus} >Next</button>
+								<button onClick={submit} >Submit</button>
+								<button onClick={deepSearch} >Not what you are looking for?</button>
+								<button onClick={handleCancel} >Cancel</button>
+							</div>
+						</ div>
 					}
 					{showOptions &&
 						<div>
@@ -333,7 +370,7 @@ export default ({ setAddFeed }) => {
 					<div id="externalMaster" className="external" onClick={handleClick} >{renderHTML(website)}</div>
 				}
 			</div>
-				}
+
 		</div >
 
 	)

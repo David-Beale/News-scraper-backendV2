@@ -25,7 +25,7 @@ a{
   text-decoration: none;
 }
 ::-webkit-scrollbar{
-  display: none;
+  /* display: none; */
 }
 
 /* ------------App------------ */
@@ -37,14 +37,16 @@ a{
 
 .bar {
   background-color:#90caf9;
-  height: 80px;
+  height: 1.5rem;
   width:100%;
+  z-index: 99;
 }
 
 .appbar{
   box-shadow:0px 10px 14px rgba(0,0,0,0.12);
   display: flex;
   justify-content: space-between;
+  height:4rem;
 }
 
 .logo__container{
@@ -55,7 +57,7 @@ a{
 }
 
 .logo{
-  width: 70px;
+  width: 50px;
 }
 
 .action__container{
@@ -85,17 +87,24 @@ a{
   border: none !important; 
 }
 
+.add-feed__container{
+  overflow: scroll;
+}
+
 .footer__container{
   bottom:0;
   box-shadow:0px -10px 14px rgba(0,0,0,0.12);
   display: flex;
   flex-direction: column;
   justify-content: center;
+  align-items: flex-end;
   position: fixed;
+  
 }
 
 .footer__text{
   margin-left:12px;
+  padding-right: 1rem;
 }
 
 /* ---------Headline List--------- */
@@ -107,7 +116,7 @@ a{
   justify-content: center;
   flex-wrap: wrap;
   height: 80%;
-  overflow: scroll;
+  overflow: hidden;
 }
 
 /* -----------Headline----------- */
@@ -122,4 +131,42 @@ a{
 
 .card__image{
   height: 160px;
+}
+
+/*------Add Feed -----*/
+
+
+.add-feed__container,.action-buttons__container{
+  align-items: center;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  overflow: hidden;
+}
+.action-buttons__container{
+  flex-direction: row;
+  height: 150px;
+}
+.action-buttons__container button{
+  margin: 16px;
+}
+.external{
+  border-top: dotted thick black;
+  height: 80vh;
+  margin: 24px;
+  /* overflow: scroll; */
+  padding: 24px;
+  z-index: -99;
+}
+
+.first-form, .second-form{
+  margin-top:20px;
+  align-items: center;
+  display:flex;
+  flex-direction: column;
+  justify-content: center;
+  border: dotted thin black;
+}
+.first-form input,.second-form input{
+  margin: 16px;
 }

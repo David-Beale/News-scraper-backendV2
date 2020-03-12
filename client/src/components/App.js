@@ -22,19 +22,9 @@ function App() {
   const [headlines, setHeadlines] = useState([]);
   const [locale, setLocale] = useState("UK");
   const [dateFull, setDate] = useState(new Date());
-  const [addFeed, setAddFeed] = useState(false);
-  console.log(locale)
+  const [addFeed, setAddFeed] = useState(false); //toggle list and add feed
 
-  const changeLocale = () => {
-    const localeInstance = locale === "UK" ? "ES" : "UK";
-    setLocale(() => (localeInstance))
-    Api.getHeadlines(date, month, year, locale)
-      .then(data => setHeadlines(data.data.headline))
-      .catch((error) => {
-        console.log("Api call error");
-        alert(error.message);
-      });
-  }
+
   const onChange = (selectedDate) => {
     const currentDate = selectedDate || dateFull;
     if (selectedDate) {
@@ -61,7 +51,10 @@ function App() {
   return (
     <div className='app__container'>
       <nav className="appbar bar">
-        <div className="logo__container">
+        <div
+          onClick={e => { e.preventDefault(); setAddFeed(false) }}
+          className="logo__container"
+        >
           <img
             className="logo"
             src={logoPath}
@@ -75,14 +68,6 @@ function App() {
           >
             Add Feed
           </Button>
-          <Button
-            variant="contained"
-            className="locale-button"
-            value={locale}
-            onClick={e => {
-              e.preventDefault(); changeLocale()
-            }}
-          >{locale}</Button>
           <Button>
             <DatePicker
               clearIcon={null}
@@ -96,7 +81,7 @@ function App() {
 
       </nav>
       {
-        addFeed ? <AddFeed setAddFeed={setAddFeed} /> : <HeadlineList headlines={headlines} />
+        addFeed ? <AddFeed setAddFeed={setAddFeed} className="add-feed__container" /> : <HeadlineList headlines={headlines} />
       }
       <div className="footer__container bar">
         <p className="footer__text">

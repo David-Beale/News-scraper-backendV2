@@ -1,13 +1,20 @@
 import React, { useState, useEffect } from 'react';
-import './App.css';
+// import './App.css';
 import HeadlineList from './headline-list/headline-list';
 import Api from './api-client';
 import renderHTML from 'react-render-html';
-import apiClient from './api-client';
+import DatePicker from 'react-date-picker'
+import { Button } from '@material-ui/core';
+import logoPath from './assets/icon.png';
+import { Card, CardMedia, CardContent, Typography, CardActions } from '@material-ui/core'
 
+let date = new Date().getDate();
+let month = new Date().getMonth() + 1;
+let year = new Date().getFullYear();
 
 function App () {
 
+  const [dateFull, setDate] = useState(new Date());
   const [headlines, setHeadlines] = useState([]);
   const [website, setWebsite] = useState('');
   const [webName, setWebName] = useState('');
@@ -36,9 +43,24 @@ function App () {
   const [deleteHeadline, setDeleteHeadline] = useState(false);
   const [deleteScraper, setDeleteScraper] = useState(false);
 
+  const onChange = (selectedDate) => {
+    const currentDate = selectedDate || dateFull;
+    if (selectedDate) {
+      year = selectedDate.getFullYear();
+      month = selectedDate.getMonth() + 1;
+      date = selectedDate.getDate();
+    }
+    Api.getHeadlines(date, month, year)
+      .then(data => setHeadlines(data.data.headline))
+      .catch((error) => {
+        console.log("Api call error");
+        alert(error.message);
+      });
+    setDate(currentDate);
+  };
 
   useEffect(() => {
-    Api.getHeadlines()
+    Api.getHeadlines(date, month, year)
       .then(result => {
         setHeadlines(result.data.headline)
       });
@@ -46,6 +68,7 @@ function App () {
   ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
   function handleClick (e) {
     e.preventDefault();
+    console.log('click')
     let currentNode = e.target
     let [path, root] = findPath(currentNode)
 
@@ -247,7 +270,9 @@ function App () {
       console.log(result)
     });
     Api.getHeadlines().then(result => {
-      setHeadlines(result.data.headline)
+      if(result.data){
+        setHeadlines(result.data.headline)
+      }
     });
     setTimeout(() => {
       window.location.reload();
@@ -264,13 +289,39 @@ function App () {
   return (
     <div>
       <div className="app-container">
-        <div className="main-header">
-          <button onClick={refresh}  >Refresh feed</button>
-          <h1 className="header">Headlines</h1>
-          <button onClick={toggleShow}  >Add new feed</button>
-          <button onClick={toggleDeleteHeadline}  >Delete Headlines </button>
-          <button onClick={toggleDeleteScraper}  >Delete Scraper </button>
-        </div>
+        <nav className="appbar bar">
+          <div
+            // onClick={e => { e.preventDefault(); setAddFeed(false) }}
+            className="logo__container"
+          >
+            <img
+              className="logo"
+              src={logoPath}
+            />
+          </div>
+          <div className="action__container">
+            <Button
+              variant="contained"
+              className="form-toggle"
+              onClick={toggleShow}
+            >
+              Add Feed
+          </Button>
+            <Button>
+              <DatePicker
+                clearIcon={null}
+                calendarIcon={null}
+                className="date-picker"
+                value={dateFull}
+                maxDate={new Date()}
+                onChange={(date) => onChange(date)} />
+            </Button>
+            <Button onClick={refresh}  >Refresh feed</Button>
+            <Button onClick={toggleDeleteHeadline}  >Delete Headlines </Button>
+            <Button onClick={toggleDeleteScraper}  >Delete Scraper </Button>
+          </div>
+
+        </nav>
         {show &&
           <HeadlineList
             headlines={headlines}
@@ -278,25 +329,31 @@ function App () {
             deleteScraper={deleteScraper}
           />}
         {!show &&
-          <div>
-            <div className="addNew">
+          <div className="">
+            <div className="">
               {showForm &&
-                <div className="container">
-                  <div className="">Create a new event</div>
-                  <form id="form" onSubmit={handleSubmit} autoComplete="new-password">
+                <div className="add-feed__container">
+                  <div className="">Create a custom scraper</div>
+                  <form id="form" className="first-form" onSubmit={handleSubmit} autoComplete="new-password">
                     <label htmlFor="httpAddress">Web Address</label>
-                    <input autoComplete="off" type="text" id="httpAddress" placeholder="Enter a web address..." onChange={handleAddressChange} value={webLink}></input>
+                    <input autoComplete="off" type="text" id="httpAddress"
+                      placeholder="Enter a web address..." onChange={handleAddressChange}
+                      value={webLink}></input>
                     <label htmlFor="name">Site name</label>
-                    <input autoComplete="off" type="text" id="name" placeholder="Enter a site name..." onChange={handleNameChange} value={webName}></input>
+                    <input autoComplete="off" type="text" id="name"
+                      placeholder="Enter a site name..." onChange={handleNameChange}
+                      value={webName}></input>
                     <label htmlFor="country">Country</label>
-                    <input autoComplete="off" type="text" id="country" placeholder="Enter a coutry code..." onChange={handleCountryChange} value={webCountry}></input>
+                    <input autoComplete="off" type="text" id="country"
+                      placeholder="Enter a coutry code..." onChange={handleCountryChange}
+                      value={webCountry}></input>
                     <button className="addbutton" type="submit">Submit</button>
                     <button className="" onClick={handleCancel} >Cancel</button>
                   </form>
                 </div>
               }
               {!showOptions && !showForm &&
-                <div>
+                <div className="second-form">
                   {(() => {
                     switch (status) {
                       case 1: return <div>
@@ -309,7 +366,6 @@ function App () {
                       </div>;
                       case 3: return <div>
                         <p>Select a Image</p>
-                        <p>{image}</p>
                         <img src={image} style={{ width: 100, height: 100 }}></img>
                       </div>;
                       case 4: return <div>
@@ -318,10 +374,12 @@ function App () {
                       </div>;
                     }
                   })()}
+                  <div className="action-buttons__container">
                   <button onClick={changeStatus} >Next</button>
                   <button onClick={submit} >Submit</button>
                   <button onClick={deepSearch} >Not what you are looking for?</button>
                   <button onClick={handleCancel} >Cancel</button>
+                  </div>
                 </div>
               }
               {showOptions &&
@@ -346,6 +404,11 @@ function App () {
             }
           </div>
         }
+      </div>
+      <div className="footer__container bar">
+        <p className="footer__text">
+          <i>developed by:</i> Joseph T.C. & David Beale
+        </p>
       </div>
     </div >
   );

@@ -4,7 +4,7 @@ const Headlines = require("../server/models/headlines")
 
 const helper = require('./helper-functions')
 
-async function fetchHeadlines (date, data, test) {
+async function fetchHeadlines(date, data, test) {
   const [day, month, year, time] = date;
   const headlinesArray = Promise.all(data.map(async (newspaper) => {
     const html = await helper.getHeadline(newspaper.website, test)

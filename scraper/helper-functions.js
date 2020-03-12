@@ -69,7 +69,7 @@ module.exports = {
           summary = children[0].data.trim();
         } else {
           for (let i = 0; i < nextNode.children.length; i++) {
-            if(nextNode.children[i].children){
+            if (nextNode.children[i].children) {
               let child = (nextNode.children[i].children.filter(child => {
                 return child.type === 'text' && child.data.trim().length > 5
               }))
@@ -89,7 +89,8 @@ module.exports = {
           nextNode = nextNode.children.filter(child => child.type === 'tag' || child.type === 'script' || child.type === 'style')[linkPath[i]]
         }
         const regex = "^(?:https?:\/\/)?(?:[^@\/\n]+@)?(?:www\.)?([^:\/?\n]+)"
-        const concatLink = website.match(regex);
+        const concatLink = website.match(regex)[0];
+        console.log(nextNode.attribs.href)
         if (nextNode.attribs.href[0] === 'h') link = (nextNode.attribs.href)
         else link = (concatLink + nextNode.attribs.href)
         // console.log('link', link)

@@ -2,7 +2,7 @@ const BASE_URL = 'http://localhost:4000'
 
 export default {
   getHeadlines: (day, month, year, locale) => {
-    return fetchRequest(`graphql?query={ headline(year: ${year} month:${month} day:${day} locale: "${locale ? locale : "UK"}" )
+    return fetchRequest(`graphql?query={ headline(year: ${year} month:${month} day:${day} )
       {day 
       month 
       year 
