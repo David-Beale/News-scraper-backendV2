@@ -43,6 +43,8 @@ function App() {
   const [deleteHeadline, setDeleteHeadline] = useState(false);
   const [deleteScraper, setDeleteScraper] = useState(false);
   const [isActiveStatus, setIsActiveStatus] = useState(false);
+  const [isActiveStatusScraper, setIsActiveStatusScraper] = useState(false);
+
 
   const onChange = (selectedDate) => {
     const currentDate = selectedDate || dateFull;
@@ -287,12 +289,12 @@ function App() {
   const toggleDeleteHeadline = () => {
     const isActiveLocal = isActiveStatus
     setDeleteHeadline(!deleteHeadline);
-    console.log(isActiveLocal)
     setIsActiveStatus(!isActiveLocal);
-    console.log(isActiveLocal)
   }
   const toggleDeleteScraper = () => {
-    setDeleteScraper(!deleteScraper)
+    const isActiveLocal = isActiveStatusScraper;
+    setDeleteScraper(!deleteScraper);
+    setIsActiveStatusScraper(!isActiveLocal);
   }
 
 
@@ -311,27 +313,33 @@ function App() {
               src={logoPath}
             />
           </div>
+          <div className="date-picker__container">
+
+            <DatePicker
+              clearIcon={null}
+              calendarIcon={null}
+              className="date-picker"
+              value={dateFull}
+              maxDate={new Date()}
+              onChange={(date) => onChange(date)} />
+          </div>
           <div className="action__container">
-            <Button
-              size="small"
-              variant="contained"
-              className="form-toggle"
-              onClick={toggleShow}
-            >
-              Add Feed
+            <div>
+
+              <Button
+                size="small"
+                variant="contained"
+                className="form-toggle appbar__button"
+                onClick={toggleShow}
+              >
+                Add Feed
           </Button>
-            <Button size="small" variant="contained" onClick={refresh}  >Refresh feed</Button>
-            <Button size="small" variant="contained" onClick={toggleDeleteHeadline} isActiveStatus={isActiveStatus} className={isActiveStatus && "danger"} >Delete Headlines </Button>
-            <Button>
-              <DatePicker
-                clearIcon={null}
-                calendarIcon={null}
-                className="date-picker"
-                value={dateFull}
-                maxDate={new Date()}
-                onChange={(date) => onChange(date)} />
-            </Button>
-            <Button size="small" variant="contained" onClick={toggleDeleteScraper}  >Delete Scraper </Button>
+              <Button size="small" variant="contained" onClick={refresh} className="appbar__button" >Refresh feed</Button>
+            </div>
+            <div>
+              <Button size="small" variant="contained" onClick={toggleDeleteHeadline} isActiveStatus={isActiveStatus} className={`${isActiveStatus && "danger"} appbar__button`}>Delete Headlines </Button>
+              <Button size="small" variant="contained" onClick={toggleDeleteScraper} isActiveStatusScraper={isActiveStatusScraper} className={`${isActiveStatusScraper && "danger2"} app-bar__button`} >Delete Scraper </Button>
+            </div>
           </div>
 
         </nav>
@@ -340,26 +348,32 @@ function App() {
             headlines={headlines}
             deleteHeadline={deleteHeadline}
             deleteScraper={deleteScraper}
+            isActiveStatus={isActiveStatus}
+            isActiveStatusScraper={isActiveStatusScraper}
           />}
         {!show &&
           <div className="">
-            <div className="">
+            <div className="first-form__container">
               {showForm &&
                 <div className="add-feed__container">
-                  <div className="">Create a custom scraper</div>
+                  <div className="">
+                    <h4>
+                      Add url to name and country to add new Feed
+                  </h4>
+                  </div>
                   <form id="form" className="first-form" onSubmit={handleSubmit} autoComplete="new-password">
-                    <label htmlFor="httpAddress">Web Address</label>
-                    <input autoComplete="off" type="text" id="httpAddress"
-                      placeholder="Enter a web address..." onChange={handleAddressChange}
-                      value={webLink}></input>
-                    <label htmlFor="name">Site name</label>
-                    <input autoComplete="off" type="text" id="name"
-                      placeholder="Enter a site name..." onChange={handleNameChange}
-                      value={webName}></input>
-                    <label htmlFor="country">Country</label>
-                    <input autoComplete="off" type="text" id="country"
-                      placeholder="Enter a coutry code..." onChange={handleCountryChange}
-                      value={webCountry}></input>
+                    <div>
+                      <label htmlFor="httpAddress">Web Address</label>
+                      <input autoComplete="off" type="text" id="httpAddress"
+                        placeholder="Enter a web address..." onChange={handleAddressChange}
+                        value={webLink}></input>
+                    </div>
+                    <div>
+                      <label htmlFor="name">Site name</label>
+                      <input autoComplete="off" type="text" id="name"
+                        placeholder="Enter a site name..." onChange={handleNameChange}
+                        value={webName}></input>
+                    </div>
                     <button className="addbutton" type="submit">Submit</button>
                     <button className="" onClick={handleCancel} >Cancel</button>
                   </form>

@@ -27,8 +27,14 @@ a{
 ::-webkit-scrollbar{
   display: none;
 }
-.danger{
-  background-color: #ef5350 !important;
+.danger {
+  background-color: #E57373 !important;
+}
+.danger2 {
+  background-color: #F06292 !important;
+}
+.doubleDanger {
+  background-color: #EF6C00 !important;
 }
 
 /* ------------App------------ */
@@ -73,6 +79,10 @@ a{
   margin: 0 12px;
 }
 
+.appbar__button {
+  margin: 0 12px !important;
+}
+
 /* .locale-button{
   border: solid 1px black;
   border-radius: 12px;
@@ -85,9 +95,15 @@ a{
   background: #e0e0e0;
   /* border: solid thin grey; */
   border-radius: 4px;
+  height: 32px;
   padding: 6px 16px; 
 }
 
+.date-picker__container {
+  align-items: center;
+  display:flex;
+  justify-content: center;
+}
 
 .react-date-picker__wrapper{
   border: none !important; 
@@ -133,14 +149,17 @@ a{
 /* ---------Headline--------- */
 
 .card__delete-button{
-  width:42px;
-  height:42px !important;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  width:40px;
+  height:40px !important;
   padding: auto;
   border: none;
-  height: 24px;
-  position: absolute;
-  /* top: 0;
-  right: 0; */
+  box-shadow: 0px 0px 1px 2px rgba(0,0,0,0.14), 0px 2px 1px 2px rgba(0,0,0,0.14);
+  position: fixed;
+  margin: 6px;
   border-radius: 100%;
   transition: background-color 250ms cubic-bezier(0.4, 0, 0.2, 1) 0ms,box-shadow 250ms cubic-bezier(0.4, 0, 0.2, 1) 0ms,border 250ms cubic-bezier(0.4, 0, 0.2, 1) 0ms;
 }
@@ -204,12 +223,17 @@ a{
   font-weight: 700;
   /* text-align: center; */
 }
+.firt-form__container {
+  height:800px;
+}
 .first-form{
   align-items: center;
+  border: dotted thin black;
   display:flex;
   flex-direction: column;
+  height: 100%;
   justify-content: center;
-  border: dotted thin black;
+  width: 80%;
 }
 .second-form{
   align-items: center;
