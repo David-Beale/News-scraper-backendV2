@@ -5,10 +5,14 @@ import Api from './api-client';
 import renderHTML from 'react-render-html';
 import DatePicker from 'react-date-picker'
 import { Button } from '@material-ui/core';
+<<<<<<< HEAD
 import logoPath from './assets/icon.png';
 import { Card, CardMedia, CardContent, Typography, CardActions } from '@material-ui/core'
 import Draggable from 'react-draggable';
+=======
+>>>>>>> 53b13da11d17b718f883b1c1dc53a37ef545a4e7
 
+import logoPath from './assets/icon.png';
 let date = new Date().getDate();
 let month = new Date().getMonth() + 1;
 let year = new Date().getFullYear();
@@ -43,6 +47,7 @@ function App () {
   const [showForm, setShowForm] = useState(false);
   const [deleteHeadline, setDeleteHeadline] = useState(false);
   const [deleteScraper, setDeleteScraper] = useState(false);
+  const [isActive, setIsActive] = useState(false);
 
   const onChange = (selectedDate) => {
     const currentDate = selectedDate || dateFull;
@@ -280,7 +285,11 @@ function App () {
     }, 1000);
   }
   const toggleDeleteHeadline = () => {
-    setDeleteHeadline(!deleteHeadline)
+    const isActiveLocal = isActive
+    setDeleteHeadline(!deleteHeadline);
+    console.log(isActiveLocal)
+    setIsActive(!isActiveLocal);
+    console.log(isActiveLocal)
   }
   const toggleDeleteScraper = () => {
     setDeleteScraper(!deleteScraper)
@@ -304,12 +313,15 @@ function App () {
           </div>
           <div className="action__container">
             <Button
+              size="small"
               variant="contained"
               className="form-toggle"
               onClick={toggleShow}
             >
               Add Feed
           </Button>
+            <Button size="small" variant="contained" onClick={refresh}  >Refresh feed</Button>
+            <Button size="small" variant="contained" onClick={toggleDeleteHeadline} isActive={isActive} className={isActive && "danger"} >Delete Headlines </Button>
             <Button>
               <DatePicker
                 clearIcon={null}
@@ -319,9 +331,7 @@ function App () {
                 maxDate={new Date()}
                 onChange={(date) => onChange(date)} />
             </Button>
-            <Button onClick={refresh}  >Refresh feed</Button>
-            <Button onClick={toggleDeleteHeadline}  >Delete Headlines </Button>
-            <Button onClick={toggleDeleteScraper}  >Delete Scraper </Button>
+            <Button size="small" variant="contained" onClick={toggleDeleteScraper}  >Delete Scraper </Button>
           </div>
 
         </nav>
@@ -359,7 +369,7 @@ function App () {
                 <Draggable>
                   <div className="second-form" id="form2">
                     <div className="form2Head" id="form2Head">Click and drag</div>
-                    {(() => { 
+                    {(() => {
                       switch (status) {
                         case 1: return <div>
                           <p className='formMessage'>Select a title</p>
@@ -380,10 +390,10 @@ function App () {
                       }
                     })()}
                     <div className="action-buttons__container">
-                      <button onClick={changeStatus} >Next</button>
-                      <button onClick={submit} >Submit</button>
-                      <button onClick={deepSearch} >Not what you are looking for?</button>
-                      <button onClick={handleCancel} >Cancel</button>
+                      {status < 5 && <Button size="small" variant="contained" onClick={changeStatus} >Next</Button>}
+                      <Button size="small" variant="contained" onClick={submit} >Submit</Button>
+                      <Button size="small" variant="contained" onClick={deepSearch} >Not what you are looking for?</Button>
+                      <Button size="small" variant="contained" onClick={handleCancel} >Cancel</Button>
                     </div>
                   </div>
                 </Draggable>
@@ -399,9 +409,9 @@ function App () {
                       }
                     </div>
                   </div>
-                  <button onClick={previousOption} >Previous</button>
-                  <button onClick={selectOption} >Select</button>
-                  <button onClick={nextOption} >Next</button>
+                  <Button size="small" variant="contained" onClick={previousOption} >Previous</Button>
+                  <Button size="small" variant="contained" onClick={selectOption} >Select</Button>
+                  <Button size="small" variant="contained" onClick={nextOption} >Next</Button>
                 </div>
               }
             </div>

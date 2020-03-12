@@ -25,7 +25,10 @@ a{
   text-decoration: none;
 }
 ::-webkit-scrollbar{
-  /* display: none; */
+  display: none;
+}
+.danger{
+  background-color: #ef5350 !important;
 }
 
 /* ------------App------------ */
@@ -64,8 +67,10 @@ a{
   align-items: center;
   display: flex;
   justify-content: space-evenly;
-  width:50%;
-
+  width:60%;
+}
+.action__container span {
+  margin: 0 12px;
 }
 
 /* .locale-button{
@@ -110,7 +115,7 @@ a{
 
 /* ---------Headline List--------- */
 
-.list__container {
+.list__container, .no-content-container {
   align-items: center;
   display: flex;
   flex-direction: row;
@@ -118,6 +123,13 @@ a{
   flex-wrap: wrap;
   height: 80%;
   overflow: hidden;
+}
+
+
+/* ---------Headline--------- */
+
+.card__delete-button{
+  width:100%;
 }
 
 /* -----------Headline----------- */

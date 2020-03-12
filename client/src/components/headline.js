@@ -4,7 +4,7 @@ import { Card, CardMedia, CardContent, Typography, CardActions, Button } from '@
 
 
 export default ({ headline }) => {
-
+  console.log(headline)
   return (
     <a
       className="anchor-link"
