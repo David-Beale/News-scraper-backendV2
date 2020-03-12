@@ -365,7 +365,7 @@ function App() {
             isActiveStatusScraper={isActiveStatusScraper}
           />}
         {!show &&
-          <div className="">
+          <div className="second__container">
             <div className="first-form__container">
               {showForm &&
                 <div className="add-feed__container">

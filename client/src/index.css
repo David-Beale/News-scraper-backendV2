@@ -198,14 +198,10 @@ a{
 }
 .external{
   border-top: dotted thick black;
-  /* position: relative; */
-  /* height: 80vh; */
   margin: 12px;
   overflow: scroll;
   padding: 24px;
-  /* left:100px; */
   z-index: -99;
-  /* overflow: visible; */
 }
 .form2Head{
   cursor: move;
