@@ -16,10 +16,12 @@ export default ({ headline, deleteHeadline, deleteScraper }) => {
   return (
     < a
       className="anchor-link"
-      href={headline.link} >
+      href={headline.link}
+      target="_blank"
+    >
       <Card className='card__container' raised={true}>
         {(deleteScraper || deleteHeadline) &&
-          <Button size="small" variant="outlined" onClick={deleteItem} class="danger card__delete-button"> DELETE </Button>
+          <button onClick={deleteItem} class="danger card__delete-button">X</button>
         }
         <CardMedia
           className="card__image"

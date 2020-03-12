@@ -122,17 +122,25 @@ a{
   justify-content: center;
   flex-wrap: wrap;
   height: 80%;
-  overflow: hidden;
+  overflow: scroll;
 }
 
 
 /* ---------Headline--------- */
 
 .card__delete-button{
-  width:100%;
+  width:42px;
+  height:42px !important;
+  padding: auto;
+  border: none;
+  height: 24px;
+  position: absolute;
+  /* top: 0;
+  right: 0; */
+  border-radius: 100%;
+  transition: background-color 250ms cubic-bezier(0.4, 0, 0.2, 1) 0ms,box-shadow 250ms cubic-bezier(0.4, 0, 0.2, 1) 0ms,border 250ms cubic-bezier(0.4, 0, 0.2, 1) 0ms;
 }
 
-/* -----------Headline----------- */
 
 .card__container {
   display:flex;
@@ -146,7 +154,7 @@ a{
   height: 160px;
 }
 
-/*------Add Feed -----*/
+/*----------------Add Feed --------------*/
 
 
 .add-feed__container,.action-buttons__container{

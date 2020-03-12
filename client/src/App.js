@@ -41,7 +41,7 @@ function App() {
   const [showForm, setShowForm] = useState(false);
   const [deleteHeadline, setDeleteHeadline] = useState(false);
   const [deleteScraper, setDeleteScraper] = useState(false);
-  const [isActive, setIsActive] = useState(false);
+  const [isActiveStatus, setIsActiveStatus] = useState(false);
 
   const onChange = (selectedDate) => {
     const currentDate = selectedDate || dateFull;
@@ -207,6 +207,11 @@ function App() {
       setStatus(status + 1)
     }
   }
+  function changeStatusBack() {
+    if (status >= 1) {
+      setStatus(status - 1)
+    }
+  }
   function toggleShow() {
     setShow(!show)
     setShowForm(true)
@@ -279,10 +284,10 @@ function App() {
     }, 1000);
   }
   const toggleDeleteHeadline = () => {
-    const isActiveLocal = isActive
+    const isActiveLocal = isActiveStatus
     setDeleteHeadline(!deleteHeadline);
     console.log(isActiveLocal)
-    setIsActive(!isActiveLocal);
+    setIsActiveStatus(!isActiveLocal);
     console.log(isActiveLocal)
   }
   const toggleDeleteScraper = () => {
@@ -313,7 +318,7 @@ function App() {
               Add Feed
           </Button>
             <Button size="small" variant="contained" onClick={refresh}  >Refresh feed</Button>
-            <Button size="small" variant="contained" onClick={toggleDeleteHeadline} isActive={isActive} className={isActive && "danger"} >Delete Headlines </Button>
+            <Button size="small" variant="contained" onClick={toggleDeleteHeadline} isActiveStatus={isActiveStatus} className={isActiveStatus && "danger"} >Delete Headlines </Button>
             <Button>
               <DatePicker
                 clearIcon={null}
@@ -377,9 +382,13 @@ function App() {
                         <p>Select a Link</p>
                         <p>{link}</p>
                       </div>;
+                      case 5: return <div>
+                        <h4>click SUBMIT to add your feed.</h4>
+                      </div>
                     }
                   })()}
                   <div className="action-buttons__container">
+                    {status < 6 && status > 1 && <Button size="small" variant="contained" onClick={changeStatusBack} >Back</Button>}
                     {status < 5 && <Button size="small" variant="contained" onClick={changeStatus} >Next</Button>}
                     <Button size="small" variant="contained" onClick={submit} >Submit</Button>
                     <Button size="small" variant="contained" onClick={deepSearch} >Not what you are looking for?</Button>
