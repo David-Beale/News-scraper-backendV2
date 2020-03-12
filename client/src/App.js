@@ -380,10 +380,10 @@ function App() {
                     }
                   })()}
                   <div className="action-buttons__container">
-                    <button onClick={changeStatus} >Next</button>
-                    <button onClick={submit} >Submit</button>
-                    <button onClick={deepSearch} >Not what you are looking for?</button>
-                    <button onClick={handleCancel} >Cancel</button>
+                    {status < 5 && <Button size="small" variant="contained" onClick={changeStatus} >Next</Button>}
+                    <Button size="small" variant="contained" onClick={submit} >Submit</Button>
+                    <Button size="small" variant="contained" onClick={deepSearch} >Not what you are looking for?</Button>
+                    <Button size="small" variant="contained" onClick={handleCancel} >Cancel</Button>
                   </div>
                 </div>
               }
@@ -398,9 +398,9 @@ function App() {
                       }
                     </div>
                   </div>
-                  <button onClick={previousOption} >Previous</button>
-                  <button onClick={selectOption} >Select</button>
-                  <button onClick={nextOption} >Next</button>
+                  <Button size="small" variant="contained" onClick={previousOption} >Previous</Button>
+                  <Button size="small" variant="contained" onClick={selectOption} >Select</Button>
+                  <Button size="small" variant="contained" onClick={nextOption} >Next</Button>
                 </div>
               }
             </div>
