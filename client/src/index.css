@@ -21,6 +21,7 @@ body{
   margin: 0;
   padding: 0;
   width: 100vw;
+  overflow-x: hidden;
 }
 a{
   text-decoration: none;
@@ -51,8 +52,9 @@ a{
 /* ------------App------------ */
 
 .app__container{
-  height: 100vh;
+  height: 95vh;
   overflow-x: hidden;
+  margin-bottom:2rem;
 }
 
 .bar {
@@ -83,8 +85,9 @@ a{
 .action__container{
   align-items: center;
   display: flex;
-  justify-content: space-evenly;
+  justify-content: space-between;
   width:60%;
+  margin-right: 40px;
 }
 .action__container span {
   margin: 0 12px;
