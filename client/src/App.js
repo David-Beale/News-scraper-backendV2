@@ -370,18 +370,15 @@ function App() {
               {showForm &&
                 <div className="add-feed__container">
                   <div className="">
-                    <h4>
-                      Add url to name and country to add new Feed
-                  </h4>
                   </div>
                   <form id="form" className="first-form" onSubmit={handleSubmit} autoComplete="new-password">
                     <label htmlFor="httpAddress">Web Address:</label>
                     <input autoComplete="off" type="text" id="httpAddress"
                       placeholder="Enter a web address..." onChange={handleAddressChange}
                       value={webLink}></input>
-                    <label htmlFor="name">Site name:</label>
+                    <label htmlFor="name">Custom scraper name:</label>
                     <input autoComplete="off" type="text" id="name"
-                      placeholder="Enter a site name..." onChange={handleNameChange}
+                      placeholder="Enter a name (e.g. BBC Most Read No.1)..." onChange={handleNameChange}
                       value={webName}></input>
                     <div>
                       <button className="addbutton" type="submit">Submit</button>
