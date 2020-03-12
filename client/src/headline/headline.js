@@ -17,9 +17,9 @@ export default ({ headline, deleteHeadline, deleteScraper }) => {
     < a
       className="anchor-link"
       href={headline.link} >
-      <Card className={'card__container'} raised={true}>
+      <Card className='card__container' raised={true}>
         {(deleteScraper || deleteHeadline) &&
-          <button onClick={deleteItem}> DELETE </button>
+          <Button size="small" variant="outlined" onClick={deleteItem} class="danger card__delete-button"> DELETE </Button>
         }
         <CardMedia
           className="card__image"

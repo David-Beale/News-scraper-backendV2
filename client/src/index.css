@@ -125,6 +125,13 @@ a{
   overflow: hidden;
 }
 
+
+/* ---------Headline--------- */
+
+.card__delete-button{
+  width:100%;
+}
+
 /* -----------Headline----------- */
 
 .card__container {
