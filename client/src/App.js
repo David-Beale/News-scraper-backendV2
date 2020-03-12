@@ -7,6 +7,7 @@ import DatePicker from 'react-date-picker'
 import { Button } from '@material-ui/core';
 import logoPath from './assets/icon.png';
 import { Card, CardMedia, CardContent, Typography, CardActions } from '@material-ui/core'
+import Draggable from 'react-draggable';
 
 let date = new Date().getDate();
 let month = new Date().getMonth() + 1;
@@ -270,7 +271,7 @@ function App () {
       console.log(result)
     });
     Api.getHeadlines().then(result => {
-      if(result.data){
+      if (result.data) {
         setHeadlines(result.data.headline)
       }
     });
@@ -284,6 +285,8 @@ function App () {
   const toggleDeleteScraper = () => {
     setDeleteScraper(!deleteScraper)
   }
+
+
 
 
   return (
@@ -353,34 +356,37 @@ function App () {
                 </div>
               }
               {!showOptions && !showForm &&
-                <div className="second-form">
-                  {(() => {
-                    switch (status) {
-                      case 1: return <div>
-                        <p>Select a title</p>
-                        <p>{title}</p>
-                      </div>;
-                      case 2: return <div>
-                        <p>Select a Summary</p>
-                        <p>{summary}</p>
-                      </div>;
-                      case 3: return <div>
-                        <p>Select a Image</p>
-                        <img src={image} style={{ width: 100, height: 100 }}></img>
-                      </div>;
-                      case 4: return <div>
-                        <p>Select a Link</p>
-                        <p>{link}</p>
-                      </div>;
-                    }
-                  })()}
-                  <div className="action-buttons__container">
-                  <button onClick={changeStatus} >Next</button>
-                  <button onClick={submit} >Submit</button>
-                  <button onClick={deepSearch} >Not what you are looking for?</button>
-                  <button onClick={handleCancel} >Cancel</button>
+                <Draggable>
+                  <div className="second-form" id="form2">
+                    <div className="form2Head" id="form2Head">Click and drag</div>
+                    {(() => { 
+                      switch (status) {
+                        case 1: return <div>
+                          <p className='formMessage'>Select a title</p>
+                          <p>{title}</p>
+                        </div>;
+                        case 2: return <div>
+                          <p className='formMessage'>Select a Summary</p>
+                          <p>{summary}</p>
+                        </div>;
+                        case 3: return <div>
+                          <p className='formMessage'>Select a Image</p>
+                          <img src={image} style={{ width: 100, height: 100 }}></img>
+                        </div>;
+                        case 4: return <div>
+                          <p className='formMessage'>Select a Link</p>
+                          <p>{link}</p>
+                        </div>;
+                      }
+                    })()}
+                    <div className="action-buttons__container">
+                      <button onClick={changeStatus} >Next</button>
+                      <button onClick={submit} >Submit</button>
+                      <button onClick={deepSearch} >Not what you are looking for?</button>
+                      <button onClick={handleCancel} >Cancel</button>
+                    </div>
                   </div>
-                </div>
+                </Draggable>
               }
               {showOptions &&
                 <div>
