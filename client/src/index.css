@@ -41,7 +41,7 @@ a{
 
 .app__container{
   height: 100vh;
-  overflow: hidden;
+  overflow: scroll;
 }
 
 .bar {
@@ -202,11 +202,11 @@ a{
   /* position: relative; */
   /* height: 80vh; */
   margin: 12px;
-  /* overflow: scroll; */
+  overflow: scroll;
   padding: 24px;
   /* left:100px; */
   z-index: -99;
-  overflow: visible;
+  /* overflow: visible; */
 }
 .form2Head{
   width:100%;

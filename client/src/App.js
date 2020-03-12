@@ -302,7 +302,7 @@ function App() {
 
   return (
     <div>
-      <div className="app-container">
+      <div className="app__container">
         <nav className="appbar bar">
           <div
             // onClick={e => { e.preventDefault(); setAddFeed(false) }}
