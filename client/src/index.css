@@ -209,11 +209,11 @@ a{
   padding:3px;
   width: 300px;
   height:300px;
-  top: 6rem;
+  top: 3rem;
   margin-left:20px;
   /* left:50vw;
   margin-left:-250px; */
-  z-index: 100;
+  z-index: 9999;
   background-color: rgba(243, 243, 243, 0.747);
 }
 .first-form input,.second-form input{

@@ -398,7 +398,11 @@ function App () {
                   <div>
                     Option {currentOption} out of {arrayOfOptions.length}
                     <div>
-                      {arrayOfOptions[currentOption - 1]}
+                      {status !== 3 &&
+                        <div>
+                          {arrayOfOptions[currentOption - 1]}
+                        </div>
+                      }
                       {status === 3 &&
                         <img src={arrayOfOptions[currentOption - 1]} style={{ height: 100 }}></img>
                       }
