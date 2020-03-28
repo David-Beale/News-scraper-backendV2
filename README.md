@@ -37,8 +37,8 @@ Delete scraper will stop scraping this headline from now on.
 * Mongo DB
 
 ## Observations
-* All external scripts are disabled when viewing external sites. Therefore, websites which rely heavily on scripts will not display properly. However, any visible content which can still be seen can still be scraped even if the formatting is broken.
-* The scraping algorithm is currently unable to handle minor changes to the external sites layout. Any change to the external site will likely render the unique path invalid. 
+* All external scripts are disabled when viewing external sites. Therefore, websites which rely heavily on scripts will not display properly. However, any visible content can still be scraped even if the formatting is broken.
+* The scraping algorithm is currently unable to handle minor changes to the external site's layout. Any change to the external site will likely render the unique path invalid. 
 
 ## Future Features
 * An algorithm that can handle minor changes to external DOMs
