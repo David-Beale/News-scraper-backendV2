@@ -8,7 +8,7 @@ async function fetchHeadlines(date, data, test) {
   const [day, month, year, time] = date;
   const headlinesArray = Promise.all(data.map(async (newspaper) => {
     const html = await helper.getHeadline(newspaper.website, test)
-    const { headline, summary, link, image } = helper.parseHeadline(html, newspaper.selector, newspaper.titlePath, newspaper.titleRoot, newspaper.summaryPath, newspaper.linkPath, newspaper.imagePath, newspaper.website, newspaper.imageTag)
+    const { headline, summary, link, image } = helper.parseHeadline(html, newspaper.titlePath, newspaper.titleRoot, newspaper.summaryPath, newspaper.linkPath, newspaper.imagePath, newspaper.website, newspaper.imageTag)
     if (headline) {
       const headlines = new Headlines({
         hash: hashSum(`${newspaper.name}${headline}${newspaper.email}`),

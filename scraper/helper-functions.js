@@ -23,7 +23,7 @@ module.exports = {
       }
     }
   },
-  parseHeadline: function (data, selector, titlePath, titleRoot, summaryPath, linkPath, imagePath, website, imageTag) {
+  parseHeadline: function (data, titlePath, titleRoot, summaryPath, linkPath, imagePath, website, imageTag) {
 
     const $ = cheerio.load(`${data}`);
     let images = Object.values($('img'))
@@ -42,13 +42,11 @@ module.exports = {
     let summary;
     let link;
     let image;
-    if (selector) {
-      headline = $(selector).first().text().trim();
-    } else if (titlePath.length) {
+    if (titlePath.length) {
       try {
         let targetNode = $(titleRoot)
-        let nextNode = targetNode.children()[titlePath[titlePath.length - 2]]
-        for (let i = titlePath.length - 3; i >= 0; i--) {
+        let nextNode = targetNode.children()[titlePath[titlePath.length - 1]]
+        for (let i = titlePath.length - 2; i >= 0; i--) {
           nextNode = nextNode.children.filter(child => child.type === 'tag' || child.type === 'script' || child.type === 'style')[titlePath[i]]
         }
         headline = nextNode.children.filter(child => {
@@ -61,8 +59,8 @@ module.exports = {
     if (summaryPath.length) {
       try {
         let targetNode = $(titleRoot)
-        let nextNode = targetNode.children()[summaryPath[summaryPath.length - 2]]
-        for (let i = summaryPath.length - 3; i >= 0; i--) {
+        let nextNode = targetNode.children()[summaryPath[summaryPath.length - 1]]
+        for (let i = summaryPath.length - 2; i >= 0; i--) {
           nextNode = nextNode.children.filter(child => child.type === 'tag' || child.type === 'script' || child.type === 'style')[summaryPath[i]]
         }
         let children = nextNode.children.filter(child => {
@@ -90,8 +88,8 @@ module.exports = {
     if (linkPath.length) {
       try {
         let targetNode = $(titleRoot)
-        let nextNode = targetNode.children()[linkPath[linkPath.length - 2]]
-        for (let i = linkPath.length - 3; i >= 0; i--) {
+        let nextNode = targetNode.children()[linkPath[linkPath.length - 1]]
+        for (let i = linkPath.length - 2; i >= 0; i--) {
           nextNode = nextNode.children.filter(child => child.type === 'tag' || child.type === 'script' || child.type === 'style')[linkPath[i]]
         }
         const regex = "^(?:https?:\/\/)?(?:[^@\/\n]+@)?(?:www\.)?([^:\/?\n]+)"
@@ -105,8 +103,8 @@ module.exports = {
     if (imagePath.length) {
       try {
         let targetNode = $(titleRoot)
-        let nextNode = targetNode.children()[imagePath[imagePath.length - 2]]
-        for (let i = imagePath.length - 3; i >= 0; i--) {
+        let nextNode = targetNode.children()[imagePath[imagePath.length - 1]]
+        for (let i = imagePath.length - 2; i >= 0; i--) {
           nextNode = nextNode.children.filter(child => child.type === 'tag' || child.type === 'script' || child.type === 'style')[imagePath[i]]
         }
         image = nextNode.attribs[imageTag]
