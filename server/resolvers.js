@@ -7,9 +7,11 @@ const storeHeadlines = require("../scraper/store-headlines");
 
 const resolvers = {
   Query: {
-    headline: async (_, args) => {
+    headline: async (_, args, context) => {
       if (Object.keys(args).length) {
-        return await Headlines.find(args);
+        const {email} = context.req.user 
+        console.log(email)
+        return await Headlines.find({...args, email});
       } else {
         return await Headlines.find();
       }
@@ -49,11 +51,11 @@ const resolvers = {
     }
   },
   Mutation: {
-    addFeed: (root, args) => {
-      console.log('adding feed')
+    addFeed: (root, args, context) => {
+      const {email} = context.req.user; 
       const { website, name, titlePath, titleRoot, summaryPath, linkPath, imagePath, imageTag } = args
       const newFeed = new SiteData({
-        website, name, titlePath, titleRoot, summaryPath, linkPath, imagePath, imageTag
+        website, name, titlePath, titleRoot, summaryPath, linkPath, imagePath, imageTag, email
       })
       return newFeed.save();
     },

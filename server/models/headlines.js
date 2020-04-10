@@ -14,6 +14,7 @@ const headlineSchema = new Schema({
   link: { type: String, allowNull: true },
   image: { type: String, allowNull: true },
   scraperID: { type: String, allowNull: true },
+  email: {type: String, allowNull: false},
 });
 
 module.exports = mongoose.model('headlines', headlineSchema);

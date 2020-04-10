@@ -1,23 +1,71 @@
-const { ApolloServer } = require("apollo-server");
+const { ApolloServer } = require("apollo-server-express");
+const express = require("express");
+const session = require('express-session');
+const passport = require('passport');
+const MongoStore = require('connect-mongo')(session);
+const PORT = process.env.PORT || 4000;
+const cors = require('cors');
+require('dotenv').config();
+const app = express();
+const mongoose = require('mongoose');
+
 const typeDefs = require("./schema");
 const resolvers = require("./resolvers");
 const storeHeadlines = require("../scraper/store-headlines");
-require('dotenv').config();
-
 require("./db");
+
+// Passport config
+require("./config/passport")(passport);
 
 const server = new ApolloServer({
   typeDefs,
   resolvers,
   playground: true,
-  cors: true,
   debug: true,
+
   introspection: true,
+  context: ({ req, res }) => ({ req, res })
 });
 
-const PORT = process.env.PORT || 4000;
+//CORS
+app.use(cors({
+  credentials: true,
+  origin: 'http://localhost:3000',
+  allowedHeaders: ['Content-Type', 'Authorization'],
+}));
 
-server.listen({ port: PORT }, () => {
+//Bodyparser
+app.use(express.urlencoded({ extended: true }));
+app.use(express.json({ limit: "10mb" }));
+
+
+//Express Session
+app.use(
+  session({
+    secret: 'mysecret',
+    store: new MongoStore({ mongooseConnection: mongoose.connection }),
+    resave: false,
+    saveUninitialized: false
+    // cookie: {maxAge: 60000}
+  })
+);
+
+//Passport middleware
+app.use(passport.initialize());
+app.use(passport.session());
+
+//Routes
+app.use('/users', require('./routes/users'));
+// app.use('/*', require('./routes/graph'));
+
+server.applyMiddleware({ 
+  app,
+  cors: {
+    origin: "http://localhost:3000",
+    credentials: true
+  }, })
+
+app.listen({ port: PORT }, () => {
   console.log(`🚀 Server ready at port: ${PORT}`);
 });
 

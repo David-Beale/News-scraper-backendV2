@@ -11,6 +11,7 @@ const siteDataSchema = new Schema({
   linkPath: { type: [], allowNull: true },
   imagePath: { type: [], allowNull: true },
   imageTag: { type: String, allowNull: true },
+  email: {type: String, allowNull: false },
 });
 
 module.exports = mongoose.model('siteData', siteDataSchema);

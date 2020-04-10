@@ -11,7 +11,7 @@ async function fetchHeadlines(date, data, test) {
     const { headline, summary, link, image } = helper.parseHeadline(html, newspaper.selector, newspaper.titlePath, newspaper.titleRoot, newspaper.summaryPath, newspaper.linkPath, newspaper.imagePath, newspaper.website, newspaper.imageTag)
     if (headline) {
       const headlines = new Headlines({
-        hash: hashSum(`${newspaper.name}${headline}`),
+        hash: hashSum(`${newspaper.name}${headline}${newspaper.email}`),
         day,
         month,
         year,
@@ -21,6 +21,7 @@ async function fetchHeadlines(date, data, test) {
         summary,
         link,
         image,
+        email: newspaper.email,
         scraperID: newspaper._id.toString(),
       })
       return headlines;
