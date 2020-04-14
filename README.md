@@ -2,7 +2,7 @@
 https://db-newsfeeds.netlify.com/  
 https://github.com/David-Beale/News-scraper-frontendV2
 ![news](https://user-images.githubusercontent.com/59053870/79229068-59fb0180-7e5a-11ea-98f7-3ad492774ba3.JPG)  
-#### News Feeds helps users to create their own feeds by selecting text and/or image to scrape from any website. The app will scrape the site once an hour and store any new data for the user to view.
+#### News Feeds helps users to create their own feeds by selecting text and/or images to scrape from any website. The app will scrape the site once an hour and store any new data for the user to view.
 
 ![Capture](https://user-images.githubusercontent.com/59053870/77827414-67e81d00-710d-11ea-9bc9-db30c80c097c.JPG)  
 
