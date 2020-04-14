@@ -1,4 +1,4 @@
-# News Scraper Frontend
+# News Scraper
 https://db-newsfeeds.netlify.com/
 https://github.com/David-Beale/News-scraper-frontendV2
 ![news](https://user-images.githubusercontent.com/59053870/79229068-59fb0180-7e5a-11ea-98f7-3ad492774ba3.JPG)  
