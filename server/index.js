@@ -30,7 +30,8 @@ const server = new ApolloServer({
 //CORS
 app.use(cors({
   credentials: true,
-  origin: 'https://db-newsfeeds.netlify.com',
+  // origin: 'http://localhost:3000',
+  origin: 'https://db-newsfeeds.netlify.app',
   allowedHeaders: ['Content-Type', 'Authorization'],
 }));
 
@@ -61,7 +62,8 @@ app.use('/users', require('./routes/users'));
 server.applyMiddleware({ 
   app,
   cors: {
-    origin: "https://db-newsfeeds.netlify.com",
+    // origin: "http://localhost:3000",
+    origin: "https://db-newsfeeds.netlify.app",
     credentials: true
   }, })
 
