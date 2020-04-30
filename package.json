@@ -27,7 +27,7 @@
     "graphql-date": "^1.0.3",
     "hash-sum": "^2.0.0",
     "html-to-text": "^5.1.1",
-    "jquery": "^3.4.1",
+    "jquery": "^3.5.0",
     "moment": "^2.24.0",
     "mongoose": "^5.8.4",
     "passport": "^0.4.1",
