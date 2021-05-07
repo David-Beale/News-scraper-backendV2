@@ -34,7 +34,7 @@
     "passport-local": "^1.0.0",
     "react-render-html": "^0.6.0",
     "sgrape": "^0.1.5",
-    "underscore": "^1.9.2"
+    "underscore": "^1.12.1"
   },
   "devDependencies": {
     "jasmine": "^3.5.0",
